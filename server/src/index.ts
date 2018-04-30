@@ -1,5 +1,9 @@
 import { GraphQLServer } from 'graphql-yoga';
 
+import dbInit from './config/db';
+
+dbInit();
+
 const typeDefs = `
   type Query {
     hello(name: String): String!
