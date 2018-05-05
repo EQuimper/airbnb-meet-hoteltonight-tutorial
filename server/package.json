@@ -1,11 +1,14 @@
 {
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts"
+    "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
+    "test": "cross-env NODE_ENV=test jest --forceExit"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.1",
     "@types/jest": "^22.2.3",
     "@types/mongoose": "^5.0.11",
     "@types/node": "^6.0.107",
+    "@types/yup": "^0.24.3",
     "cross-env": "^5.1.4",
     "jest": "^22.4.3",
     "nodemon": "^1.17.3",
@@ -16,7 +19,23 @@
     "typescript": "^2.8.3"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "graphql-yoga": "^1.13.1",
-    "mongoose": "^5.0.17"
+    "mongoose": "^5.0.17",
+    "yup": "^0.24.1"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
