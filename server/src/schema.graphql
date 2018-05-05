@@ -4,15 +4,22 @@ schema {
 }
 
 type Query {
+  hello: String!
   bye: String
 }
 
 type Mutation {
+  loginWithEmailAndPassword(input: LoginWithEmailAndPasswordInput!): Auth
   signup(input: SignupInput!): Auth
 }
 
 type Auth {
   token: String!
+}
+
+input LoginWithEmailAndPasswordInput {
+  email: String!
+  password: String!
 }
 
 type User {

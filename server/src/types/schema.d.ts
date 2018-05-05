@@ -22,19 +22,25 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
+    hello: string;
     bye: string | null;
   }
 
   interface IMutation {
     __typename: 'Mutation';
+    loginWithEmailAndPassword: IAuth | null;
     signup: IAuth | null;
+  }
+
+  interface ILoginWithEmailAndPasswordOnMutationArguments {
+    input: ILoginWithEmailAndPasswordInput;
   }
 
   interface ISignupOnMutationArguments {
     input: ISignupInput;
   }
 
-  interface ISignupInput {
+  interface ILoginWithEmailAndPasswordInput {
     email: string;
     password: string;
   }
@@ -42,6 +48,11 @@ declare namespace GQL {
   interface IAuth {
     __typename: 'Auth';
     token: string;
+  }
+
+  interface ISignupInput {
+    email: string;
+    password: string;
   }
 
   interface IUser {

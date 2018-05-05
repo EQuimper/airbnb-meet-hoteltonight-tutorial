@@ -1,3 +1,16 @@
 type Auth {
   token: String!
 }
+
+input LoginWithEmailAndPasswordInput {
+  email: String!
+  password: String!
+}
+
+type Query {
+  hello: String!
+}
+
+type Mutation {
+  loginWithEmailAndPassword(input: LoginWithEmailAndPasswordInput!): Auth
+}
