@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import * as mongoose from 'mongoose';
+import * as bcrypt from 'bcryptjs';
 
-interface IUserDocument extends mongoose.Document {
+export interface IUserDocument extends mongoose.Document {
   email: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-interface IUser extends IUserDocument {
+export interface IUserModel extends IUserDocument {
   _hashPassword(password: string): string;
   _comparePassword(password: string): boolean;
 }
@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-UserSchema.pre<IUser>('save', function(next) {
+UserSchema.pre<IUserModel>('save', function(next) {
   if (this.isModified('password')) {
     this.password = this._hashPassword(this.password);
   }
@@ -48,9 +48,9 @@ UserSchema.methods = {
   _hashPassword(password: string): string {
     return bcrypt.hashSync(password, 10);
   },
-  _comparePassword(this: IUser, password: string): boolean {
+  _comparePassword(this: IUserModel, password: string): boolean {
     return bcrypt.compareSync(password, this.password);
   },
 };
 
-export const UserModel = mongoose.model<IUser>('User', UserSchema);
+export const UserModel = mongoose.model<IUserModel>('User', UserSchema);

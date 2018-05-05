@@ -1,0 +1,28 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  bye: String
+}
+
+type Mutation {
+  signup(input: SignupInput!): Auth
+}
+
+type Auth {
+  token: String!
+}
+
+type User {
+  _id: ID!
+  email: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+}

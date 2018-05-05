@@ -1,20 +1,16 @@
+import * as fs from 'fs';
 import { GraphQLServer } from 'graphql-yoga';
+import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 
 import dbInit from './config/db';
 
 dbInit();
 
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
+const typeDefs = mergeTypes(fileLoader(`${__dirname}/modules/**/*.graphql`), { all: true });
 
-const resolvers = {
-  Query: {
-    hello: (_: any, { name }: any) => `Hello ${name || 'World'}`,
-  },
-};
+const resolvers = mergeResolvers(fileLoader(`${__dirname}/modules/**/resolvers.ts`), { all: true });
+
+fs.writeFileSync('src/schema.graphql', typeDefs);
 
 const server = new GraphQLServer({ typeDefs, resolvers });
 

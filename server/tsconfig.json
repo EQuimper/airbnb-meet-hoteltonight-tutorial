@@ -6,7 +6,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
