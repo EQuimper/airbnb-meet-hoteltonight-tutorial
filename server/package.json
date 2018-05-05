@@ -1,4 +1,6 @@
 {
+  "name": "airbnb-meet-hoteltonight",
+  "version": "0.0.1",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "test": "cross-env NODE_ENV=test jest --forceExit"
@@ -25,6 +27,9 @@
     "yup": "^0.24.1"
   },
   "jest": {
+    "setupFiles": [
+      "./test/setup.ts"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
