@@ -27,6 +27,7 @@
     "yup": "^0.24.1"
   },
   "jest": {
+    "verbose": true,
     "setupFiles": [
       "./test/setup.ts"
     ],

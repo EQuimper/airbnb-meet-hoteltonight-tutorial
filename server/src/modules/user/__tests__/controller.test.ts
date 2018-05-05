@@ -20,7 +20,7 @@ describe('UserController', () => {
     expect(user.updatedAt).not.toBeUndefined();
   });
 
-  test('throw error when try to create user without email', async () => {
+  test('throw "email is a required field" when try to create user without email', async () => {
     const data = {
       password: 'password123',
     };
@@ -33,7 +33,7 @@ describe('UserController', () => {
     }
   });
 
-  test('throw error when try to create user without password', async () => {
+  test('throw "password is a required field" when try to create user without password', async () => {
     const data = {
       email: 'hello@gmail.com',
     };
@@ -46,7 +46,7 @@ describe('UserController', () => {
     }
   });
 
-  test('throw error when try to create user without a valid email', async () => {
+  test('throw "email must be a valid email" when try to create user without a valid email', async () => {
     const data = {
       email: 'joe123',
       password: 'password123',
@@ -59,7 +59,7 @@ describe('UserController', () => {
     }
   });
 
-  test('throw error when try to create user with a password too small', async () => {
+  test('throw "password must be at least 6 characters" when try to create user with a password too small', async () => {
     const data = {
       email: 'hello@gmail.com',
       password: 'pass',
@@ -85,7 +85,7 @@ describe('UserController', () => {
     expect(user.email).toBe(data.email);
   });
 
-  test('throw error if try to _getByEmail when email dont match', async () => {
+  test('throw "User not exist" if try to _getByEmail when email dont match', async () => {
     try {
       await userController._getByEmail('hello@gmail.com');
     } catch (error) {
@@ -93,7 +93,7 @@ describe('UserController', () => {
     }
   });
 
-  test('thow error when try to _getByEmail without an email', async () => {
+  test('thow "email is a required field" when try to _getByEmail without an email', async () => {
     try {
       // @ts-ignore
       await userController._getByEmail();
