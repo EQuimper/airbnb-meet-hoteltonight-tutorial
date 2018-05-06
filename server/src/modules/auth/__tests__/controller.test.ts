@@ -15,74 +15,82 @@ describe('AuthController', () => {
     user = await UserModel.create(data);
   });
 
-  test('createToken -> be able to create a jwt token', async () => {
-    expect(typeof createToken(user)).toBe('string');
+  describe('createToken', () => {
+    test('be able to create a jwt token', async () => {
+      expect(typeof createToken(user)).toBe('string');
+    });
   });
 
-  test('decodeToken -> be able to decode a good token', async () => {
-    const token = createToken(user);
+  describe('decodeToken', () => {
+    test('be able to decode a good token', async () => {
+      const token = createToken(user);
 
-    // @ts-ignore
-    expect(decodeToken(token)._id).toBe(user._id.toString());
+      // @ts-ignore
+      expect(decodeToken(token)._id).toBe(user._id.toString());
+    });
+
+    test('throw "jwt malformed" if token is not a valid one', async () => {
+      const token = 'helloworld';
+
+      function call() {
+        decodeToken(token);
+      }
+
+      expect(call).toThrowError('jwt malformed');
+    });
   });
 
-  test('decodeToken -> throw "jwt malformed" if token is not a valid one', async () => {
-    const token = 'helloworld';
+  describe('loginWithEmailAndPassword', () => {
+    test('be able to login with email and password', async () => {
+      const res = await loginWithEmailAndPassword(data);
+      expect(typeof res.token).toBe('string');
+    });
 
-    function call() {
-      decodeToken(token);
-    }
-
-    expect(call).toThrowError('jwt malformed');
+    test('throw "Unauthorized" if wrong password when login', async () => {
+      try {
+        await loginWithEmailAndPassword({ email: data.email, password: 'helloworld' });
+      } catch (error) {
+        expect(error.message).toBe('Unauthorized');
+      }
+    });
   });
 
-  test('loginWithEmailAndPassword -> be able to login with email and password', async () => {
-    const res = await loginWithEmailAndPassword(data);
-    expect(typeof res.token).toBe('string');
-  });
+  describe('signup', () => {
+    test('be able to signup and receive a jwt token', async () => {
+      const info = {
+        email: 'jonsnow@gmail.com',
+        password: 'password123',
+      };
 
-  test('loginWithEmailAndPassword -> throw "Unauthorized" if wrong password when login', async () => {
-    try {
-      await loginWithEmailAndPassword({ email: data.email, password: 'helloworld' });
-    } catch (error) {
-      expect(error.message).toBe('Unauthorized');
-    }
-  });
+      const res = await signup(info);
 
-  test('signup -> be able to signup and receive a jwt token', async () => {
-    const info = {
-      email: 'jonsnow@gmail.com',
-      password: 'password123',
-    };
+      expect(typeof res.token).toBe('string');
+    });
 
-    const res = await signup(info);
+    test('throw "Email must be unique" if email already use', async () => {
+      const info = {
+        email: data.email,
+        password: 'password123',
+      };
 
-    expect(typeof res.token).toBe('string');
-  });
+      try {
+        await signup(info);
+      } catch (error) {
+        expect(error.message).toBe('Email must be unique');
+      }
+    });
 
-  test('signup -> throw "Email must be unique" if email already use', async () => {
-    const info = {
-      email: data.email,
-      password: 'password123',
-    };
+    test('throw "password must be at least 6 characters" if password is not long enough', async () => {
+      const info = {
+        email: 'jonsnow@gmail.com',
+        password: 'pass',
+      };
 
-    try {
-      await signup(info);
-    } catch (error) {
-      expect(error.message).toBe('Email must be unique');
-    }
-  });
-
-  test('signup -> throw "password must be at least 6 characters" if password is not long enough', async () => {
-    const info = {
-      email: 'jonsnow@gmail.com',
-      password: 'pass',
-    };
-
-    try {
-      await signup(info);
-    } catch (error) {
-      expect(error.message).toBe('password must be at least 6 characters');
-    }
+      try {
+        await signup(info);
+      } catch (error) {
+        expect(error.message).toBe('password must be at least 6 characters');
+      }
+    });
   });
 });
