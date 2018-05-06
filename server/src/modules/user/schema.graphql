@@ -6,15 +6,6 @@ type User {
   updatedAt: String!
 }
 
-input SignupInput {
-  email: String!
-  password: String!
-}
-
 type Query {
   bye: String
-}
-
-type Mutation {
-  signup(input: SignupInput!): Auth
 }

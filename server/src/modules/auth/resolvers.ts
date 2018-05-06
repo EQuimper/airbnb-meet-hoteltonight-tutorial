@@ -6,8 +6,9 @@ const resolvers: ResolverMap = {
     hello: () => 'bye',
   },
   Mutation: {
-    loginWithEmailAndPassword: async (_, args: GQL.ILoginWithEmailAndPasswordOnMutationArguments) =>
+    loginWithEmailAndPassword: (_, args: GQL.ILoginWithEmailAndPasswordOnMutationArguments) =>
       authController._loginWithEmailAndPassword(args.input),
+    signup: (_, args: GQL.ISignupOnMutationArguments) => authController._signup(args.input),
   },
 };
 

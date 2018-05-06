@@ -7,10 +7,16 @@ input LoginWithEmailAndPasswordInput {
   password: String!
 }
 
+input SignupInput {
+  email: String!
+  password: String!
+}
+
 type Query {
   hello: String!
 }
 
 type Mutation {
   loginWithEmailAndPassword(input: LoginWithEmailAndPasswordInput!): Auth
+  signup(input: SignupInput!): Auth
 }

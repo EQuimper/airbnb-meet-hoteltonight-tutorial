@@ -1,43 +1,52 @@
 import * as jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 
-import { IUserModel, userController } from '../user';
+import { IUserModel, createUser, getUserByEmail } from '../user';
 import constants from '../../config/constants';
 
-class AuthController {
-  _createToken(user: IUserModel) {
-    return jwt.sign({ _id: user._id }, constants.JWT_SECRET);
-  }
-
-  _decodeToken(token: string) {
-    return jwt.verify(token, constants.JWT_SECRET);
-  }
-
-  async _loginWithEmailAndPassword(info: { email: string; password: string }) {
-    const schema = Yup.object().shape({
-      email: Yup.string()
-        .email()
-        .required(),
-      password: Yup.string().required(),
-    });
-
-    try {
-      await schema.validate(info);
-
-      const user = await userController._getByEmail(info.email);
-
-      const validPw = user._comparePassword(info.password);
-
-      if (validPw) {
-        return {
-          token: this._createToken(user),
-        };
-      }
-      throw new Error('Unauthorized');
-    } catch (error) {
-      throw error;
-    }
-  }
+interface UserDTO {
+  email: string;
+  password: string;
 }
 
-export const authController = new AuthController();
+export const createToken = (user: IUserModel) => jwt.sign({ _id: user._id }, constants.JWT_SECRET);
+
+export const decodeToken = (token: string) => jwt.verify(token, constants.JWT_SECRET);
+
+export const signup = async (info: UserDTO) => {
+  try {
+    const user = await createUser(info);
+
+    return {
+      token: createToken(user),
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const loginWithEmailAndPassword = async (info: UserDTO) => {
+  const schema = Yup.object().shape({
+    email: Yup.string()
+      .email()
+      .required(),
+    password: Yup.string().required(),
+  });
+
+  try {
+    await schema.validate(info);
+
+    const user = await getUserByEmail(info.email);
+
+    const validPw = user._comparePassword(info.password);
+
+    if (validPw) {
+      return {
+        token: createToken(user),
+      };
+    }
+    throw new Error('Unauthorized')
+  } catch (error) {
+    throw error;
+  }
+};

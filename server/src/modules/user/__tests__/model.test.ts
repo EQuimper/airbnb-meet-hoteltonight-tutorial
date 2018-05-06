@@ -30,7 +30,7 @@ describe('UserModel', () => {
     }
   });
 
-  test('compare the password correctly', async () => {
+  test('_comparePassword -> compare the password correctly', async () => {
     const data = {
       email: 'hello@gmail.com',
       password: 'password123',
