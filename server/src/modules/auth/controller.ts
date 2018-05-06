@@ -45,7 +45,7 @@ export const loginWithEmailAndPassword = async (info: UserDTO) => {
         token: createToken(user),
       };
     }
-    throw new Error('Unauthorized')
+    throw new Error('Unauthorized');
   } catch (error) {
     throw error;
   }

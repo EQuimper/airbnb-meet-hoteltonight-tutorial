@@ -7,5 +7,5 @@ type User {
 }
 
 type Query {
-  bye: String
+  hello: String
 }

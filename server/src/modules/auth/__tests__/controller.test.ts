@@ -71,7 +71,7 @@ describe('AuthController', () => {
     } catch (error) {
       expect(error.message).toBe('Email must be unique');
     }
-  })
+  });
 
   test('signup -> throw "password must be at least 6 characters" if password is not long enough', async () => {
     const info = {

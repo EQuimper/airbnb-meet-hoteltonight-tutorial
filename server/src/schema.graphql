@@ -4,8 +4,7 @@ schema {
 }
 
 type Query {
-  hello: String!
-  bye: String
+  hello: String
 }
 
 type Mutation {

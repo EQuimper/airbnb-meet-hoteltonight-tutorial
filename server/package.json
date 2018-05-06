@@ -5,7 +5,8 @@
     "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "test": "cross-env NODE_ENV=test jest --forceExit",
     "gen-schema-types": "gql2ts src/schema.graphql -o src/types/schema.d.ts",
-    "open-coverage": "open coverage/lcov-report/index.html"
+    "open-coverage": "open coverage/lcov-report/index.html",
+    "prettier": "prettier --write 'src/**/*.ts'"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.1",
@@ -13,14 +14,12 @@
     "@types/jsonwebtoken": "^7.2.7",
     "@types/mongoose": "^5.0.11",
     "@types/node": "^6.0.107",
-    "@types/supertest": "^2.0.4",
     "@types/yup": "^0.24.3",
     "cross-env": "^5.1.4",
     "gql2ts": "^1.8.0",
     "jest": "^22.4.3",
     "nodemon": "^1.17.3",
     "prettier": "^1.12.1",
-    "supertest": "^3.0.0",
     "ts-jest": "^22.4.4",
     "ts-node": "^6.0.2",
     "tslint": "^5.9.1",
