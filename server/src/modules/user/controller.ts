@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 import { UserModel, UserInfo } from './model';
+import { checkValidId } from '../../utils/checkValidId';
 
 export const createUser = async (info: UserInfo) => {
   const schema = Yup.object().shape({
@@ -30,6 +31,22 @@ export const getUserByEmail = async (email: string) => {
   try {
     await schema.validate({ email });
     const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      throw new Error('User not exist');
+    }
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getViewer = async (id: string) => {
+  checkValidId(id);
+
+  try {
+    const user = await UserModel.findById(id);
 
     if (!user) {
       throw new Error('User not exist');

@@ -1,4 +1,4 @@
-import { createUser, getUserByEmail } from '../controller';
+import { createUser, getUserByEmail, getViewer } from '../controller';
 import { UserModel } from '../model';
 
 describe('UserController', () => {
@@ -102,6 +102,47 @@ describe('UserController', () => {
         await getUserByEmail();
       } catch (error) {
         expect(error.message).toBe('email is a required field');
+      }
+    });
+  });
+
+  describe('getViewer', () => {
+    test('return user from the id provided', async () => {
+      const data = {
+        email: 'hello@gmail.com',
+        password: 'password123',
+      };
+
+      const user = await createUser(data);
+
+      const res = await getViewer(user._id);
+
+      expect(res._id).toEqual(user._id);
+      expect(res.email).toBe(user.email);
+    });
+
+    test('throw "Must be a valid id" if id is not valid', async () => {
+      try {
+        await getViewer('123');
+      } catch (error) {
+        expect(error.message).toBe('Must be a valid id');
+      }
+    });
+
+    test('throw "User not exist" if id dont belong to a user', async () => {
+      const data = {
+        email: 'hello@gmail.com',
+        password: 'password123',
+      };
+
+      const user = await UserModel.create(data);
+
+      await user.remove();
+
+      try {
+        await getViewer(user._id);
+      } catch (error) {
+        expect(error.message).toBe('User not exist');
       }
     });
   });

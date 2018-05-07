@@ -18,6 +18,9 @@ export const server = new ApolloServer({
   typeDefs,
   // @ts-ignore
   resolvers,
+
+  // @ts-ignore
+  context: (ctx: any) => ({ user: ctx.req.user }),
 });
 
 registerServer({ server, app });
