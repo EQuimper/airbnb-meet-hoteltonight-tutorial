@@ -1,19 +1,14 @@
 import * as jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 
-import { IUserModel, createUser, getUserByEmail } from '../user';
+import { IUserModel, createUser, getUserByEmail, UserInfo } from '../user';
 import constants from '../../config/constants';
-
-interface UserDTO {
-  email: string;
-  password: string;
-}
 
 export const createToken = (user: IUserModel) => jwt.sign({ _id: user._id }, constants.JWT_SECRET);
 
 export const decodeToken = (token: string) => jwt.verify(token, constants.JWT_SECRET);
 
-export const signup = async (info: UserDTO) => {
+export const signup = async (info: UserInfo) => {
   try {
     const user = await createUser(info);
 
@@ -25,7 +20,7 @@ export const signup = async (info: UserDTO) => {
   }
 };
 
-export const loginWithEmailAndPassword = async (info: UserDTO) => {
+export const loginWithEmailAndPassword = async (info: UserInfo) => {
   const schema = Yup.object().shape({
     email: Yup.string()
       .email()

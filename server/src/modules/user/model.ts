@@ -1,9 +1,12 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 
-export interface IUserDocument extends mongoose.Document {
+export interface UserInfo {
   email: string;
   password: string;
+}
+
+export interface IUserDocument extends mongoose.Document, UserInfo {
   createdAt: Date;
   updatedAt: Date;
 }

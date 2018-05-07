@@ -1,6 +1,11 @@
 {
   "name": "airbnb-meet-hoteltonight",
   "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "email": "quimperemanuel@gmail.com",
+    "name": "Emanuel Quimper <EQuimper>"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "test": "cross-env NODE_ENV=test jest --forceExit",
@@ -38,21 +43,12 @@
   },
   "jest": {
     "verbose": true,
-    "setupFiles": [
-      "./test/setup.ts"
-    ],
+    "setupFiles": ["./test/setup.ts"],
     "collectCoverage": true,
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
   }
 }

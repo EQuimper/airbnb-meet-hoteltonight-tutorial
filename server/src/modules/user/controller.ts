@@ -1,13 +1,8 @@
 import * as Yup from 'yup';
 
-import { UserModel } from './model';
+import { UserModel, UserInfo } from './model';
 
-interface UserDTO {
-  email: string;
-  password: string;
-}
-
-export const createUser = async (info: UserDTO) => {
+export const createUser = async (info: UserInfo) => {
   const schema = Yup.object().shape({
     email: Yup.string()
       .email()
