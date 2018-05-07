@@ -1,13 +1,27 @@
-import { GraphQLServer } from 'graphql-yoga';
-import * as fs from 'fs';
+import { ApolloServer } from 'apollo-server';
+import * as express from 'express';
+import { registerServer } from 'apollo-server-express';
 
 import dbInit from './config/db';
+import { middlewares } from './config/middlewares';
 import { typeDefs, resolvers } from './graphqlSetup';
 
 dbInit();
 
-fs.writeFileSync('src/schema.graphql', typeDefs);
+const app = express();
 
-export const server = new GraphQLServer({ typeDefs, resolvers });
+middlewares(app);
 
-server.start(() => console.log('Server is running on http://localhost:4000'));
+// @ts-ignore
+export const server = new ApolloServer({
+  // @ts-ignore
+  typeDefs,
+  // @ts-ignore
+  resolvers,
+});
+
+registerServer({ server, app });
+
+server.listen().then(({ url }: any) => {
+  console.log(`🚀 Server ready at ${url}`);
+});

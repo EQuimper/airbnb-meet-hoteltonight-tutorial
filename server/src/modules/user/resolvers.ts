@@ -1,5 +1,9 @@
 import { ResolverMap } from '../../types/graphql-utils';
 
-const resolvers: ResolverMap = {};
+const resolvers: ResolverMap = {
+  Query: {
+    hello: () => 'yo',
+  },
+};
 
 export default resolvers;
