@@ -2,7 +2,7 @@ import { graphql } from 'graphql';
 
 import { UserModel } from '../../user';
 import { schema } from '../../../graphqlSetup';
-import { decodeToken } from '../../auth';
+import { mockLogin } from '../../../../test/mockLogin';
 
 const data = {
   email: 'hello@gmail.com',
@@ -20,27 +20,9 @@ describe('User Resolvers', () => {
     });
 
     test('be able to get info if logged', async () => {
-      let query = `
-        mutation {
-          loginWithEmailAndPassword(input: { email: "${data.email}", password: "${
-        data.password
-      }" }) {
-            token
-          }
-        }
-      `;
+      const ctx = await mockLogin(data);
 
-      let res = await graphql(schema, query);
-
-      const { token } = res.data!.loginWithEmailAndPassword;
-
-      const decode = decodeToken(token);
-
-      const ctx = {
-        user: decode,
-      };
-
-      query = `
+      const query = `
         query {
           me {
             _id
@@ -49,13 +31,12 @@ describe('User Resolvers', () => {
         }
       `;
 
-      res = await graphql(schema, query, null, ctx);
+      const res = await graphql(schema, query, null, ctx);
 
       const { me } = res.data!;
 
-      // @ts-ignore
-      expect(me._id).toEqual(decode._id);
       expect(me.email).toBe(data.email);
+      expect(typeof me._id).toBe('string');
     });
   });
 });
