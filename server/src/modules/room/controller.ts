@@ -48,7 +48,13 @@ export const getRoomById = async (id: string) => {
   checkValidId(id);
 
   try {
-    return RoomModel.findById(id);
+    const room = await RoomModel.findById(id);
+
+    if (!room) {
+      throw new Error('Room not exist');
+    }
+
+    return room;
   } catch (error) {
     throw error;
   }

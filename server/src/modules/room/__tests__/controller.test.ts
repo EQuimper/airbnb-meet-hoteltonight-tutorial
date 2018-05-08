@@ -1,4 +1,4 @@
-import { RoomModel, createRoom } from '..';
+import { RoomModel, createRoom, getRoomById } from '..';
 import { UserModel, IUserModel } from '../..';
 
 describe('Room Controller', () => {
@@ -125,6 +125,63 @@ describe('Room Controller', () => {
         await createRoom(roomData, user._id);
       } catch (error) {
         expect(error.message).toBe('haveTv is a required field');
+      }
+    });
+  });
+
+  describe('getRoomById', () => {
+    test('return room by his id', async () => {
+      const roomData = {
+        name: 'my room',
+        description: 'description',
+        bedroom: 2,
+        bathroom: 1,
+        location: {
+          address: '555 av Will, Quebec',
+          lat: 50,
+          lng: 43,
+        },
+        price: 150,
+        haveInternet: true,
+        haveAirCond: true,
+        haveHeating: false,
+        haveTv: true,
+      };
+
+      const room = await createRoom(roomData, user._id);
+
+      const res = await getRoomById(room._id);
+
+      expect(res!._id).toEqual(room._id);
+      expect(res!.name).toBe(room.name);
+    });
+
+    test('throw "Room not exist" if id dont belong to a room', async () => {
+      const roomData = {
+        name: 'my room',
+        description: 'description',
+        bedroom: 2,
+        bathroom: 1,
+        location: {
+          address: '555 av Will, Quebec',
+          lat: 50,
+          lng: 43,
+        },
+        price: 150,
+        haveInternet: true,
+        haveAirCond: true,
+        haveHeating: false,
+        haveTv: true,
+      };
+
+      const room = await createRoom(roomData, user._id);
+
+      await room.remove();
+
+      try {
+        await getRoomById(room._id);
+      } catch (error) {
+        expect(error.message).toBe('Room not exist');
       }
     });
   });

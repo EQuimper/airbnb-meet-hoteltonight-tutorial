@@ -22,14 +22,53 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
-    hello: string;
-    bye: string | null;
+    room: IRoom;
+    getOwnerRoom: Array<IRoom>;
+    me: IUser;
+  }
+
+  interface IRoomOnQueryArguments {
+    id: string;
+  }
+
+  interface IRoom {
+    __typename: 'Room';
+    _id: string;
+    name: string;
+    description: string | null;
+    bedroom: number;
+    bathroom: number;
+    location: IRoomLocation;
+    price: number;
+    haveInternet: boolean;
+    haveAirCond: boolean;
+    haveHeating: boolean;
+    haveTv: boolean;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface IRoomLocation {
+    __typename: 'RoomLocation';
+    address: string;
+    lat: number;
+    lng: number;
+  }
+
+  interface IUser {
+    __typename: 'User';
+    _id: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
   }
 
   interface IMutation {
     __typename: 'Mutation';
     loginWithEmailAndPassword: IAuth | null;
     signup: IAuth | null;
+    makeRoomInactive: IRoom;
   }
 
   interface ILoginWithEmailAndPasswordOnMutationArguments {
@@ -38,6 +77,10 @@ declare namespace GQL {
 
   interface ISignupOnMutationArguments {
     input: ISignupInput;
+  }
+
+  interface IMakeRoomInactiveOnMutationArguments {
+    id: string;
   }
 
   interface ILoginWithEmailAndPasswordInput {
@@ -53,14 +96,6 @@ declare namespace GQL {
   interface ISignupInput {
     email: string;
     password: string;
-  }
-
-  interface IUser {
-    __typename: 'User';
-    _id: string;
-    email: string;
-    createdAt: string;
-    updatedAt: string;
   }
 }
 

@@ -4,12 +4,15 @@ schema {
 }
 
 type Query {
+  room(id: ID!): Room!
+  getOwnerRoom: [Room]!
   me: User!
 }
 
 type Mutation {
   loginWithEmailAndPassword(input: LoginWithEmailAndPasswordInput!): Auth
   signup(input: SignupInput!): Auth
+  makeRoomInactive(id: ID!): Room!
 }
 
 type Auth {
@@ -24,6 +27,29 @@ input LoginWithEmailAndPasswordInput {
 input SignupInput {
   email: String!
   password: String!
+}
+
+type RoomLocation {
+  address: String!
+  lat: Int!
+  lng: Int!
+}
+
+type Room {
+  _id: ID!
+  name: String!
+  description: String
+  bedroom: Int!
+  bathroom: Int!
+  location: RoomLocation!
+  price: Int!
+  haveInternet: Boolean!
+  haveAirCond: Boolean!
+  haveHeating: Boolean!
+  haveTv: Boolean!
+  isActive: Boolean!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type User {
