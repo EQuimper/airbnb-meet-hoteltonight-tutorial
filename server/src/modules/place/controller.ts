@@ -13,8 +13,8 @@ export const createPlace = async (info: PlaceInfo, userId: string) => {
   const schema = Yup.object().shape({
     name: Yup.string().required(),
     description: Yup.string(),
-    bedplace: Yup.number().required(),
-    bathplace: Yup.number().required(),
+    bedroom: Yup.number().required(),
+    bathroom: Yup.number().required(),
     location: Yup.object().shape({
       address: Yup.string().required(),
       lat: Yup.number().required(),
@@ -76,8 +76,8 @@ export const updatePlace = async (placeId: string, info: PlaceInfo, ownerId: str
   const schema = Yup.object().shape({
     name: Yup.string(),
     description: Yup.string(),
-    bedplace: Yup.number(),
-    bathplace: Yup.number(),
+    bedroom: Yup.number(),
+    bathroom: Yup.number(),
     location: Yup.object().shape({
       address: Yup.string(),
       lat: Yup.number(),
