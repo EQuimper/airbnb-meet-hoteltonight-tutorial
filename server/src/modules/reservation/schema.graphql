@@ -1,0 +1,12 @@
+type Reservation {
+  startDate: String!
+  endDate: String!
+  price: Int!
+  total: Int!
+
+  place: Place!
+  user: User!
+
+  createdAt: String!
+  updatedAt: String!
+}

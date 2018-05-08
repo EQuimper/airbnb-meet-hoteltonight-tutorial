@@ -25,6 +25,7 @@ export const createPlace = async (info: PlaceInfo, userId: string) => {
     haveAirCond: Yup.boolean().required(),
     haveHeating: Yup.boolean().required(),
     haveTv: Yup.boolean().required(),
+    petsAllowed: Yup.boolean().required(),
     isActive: Yup.boolean(),
     maxGuest: Yup.number().required(),
   });
@@ -86,6 +87,7 @@ export const updatePlace = async (placeId: string, info: PlaceInfo, ownerId: str
     price: Yup.number(),
     haveInternet: Yup.boolean(),
     haveAirCond: Yup.boolean(),
+    petsAllowed: Yup.boolean(),
     haveHeating: Yup.boolean(),
     haveTv: Yup.boolean(),
     isActive: Yup.boolean(),
@@ -98,7 +100,7 @@ export const updatePlace = async (placeId: string, info: PlaceInfo, ownerId: str
     const place = await PlaceModel.findById(placeId);
 
     if (place) {
-      if (place.owner.toString() === ownerId) {
+      if (place.owner.toString() === ownerId.toString()) {
         (Object.keys(info) as (keyof PlaceInfo)[]).forEach(key => {
           place[key] = info[key];
         });
@@ -131,7 +133,7 @@ export const makePlaceInactive = async (placeId: string, ownerId: string) => {
     const place = await PlaceModel.findById(placeId);
 
     if (place) {
-      if (place.owner.toString() === ownerId) {
+      if (place.owner.toString() === ownerId.toString()) {
         place.isActive = false;
 
         return place.save();

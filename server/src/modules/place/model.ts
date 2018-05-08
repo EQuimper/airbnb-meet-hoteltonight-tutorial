@@ -18,12 +18,13 @@ export interface PlaceInfo {
   haveHeating: boolean;
   isActive?: boolean;
   maxGuest: number;
+  petsAllowed: boolean;
 }
 
 export interface IPlaceDocument extends mongoose.Document, PlaceInfo {
   createdAt: Date;
   updatedAt: Date;
-  owner: mongoose.Schema.Types.ObjectId | IUserModel;
+  owner: IUserModel | string;
 }
 
 export interface IPlaceModel extends IPlaceDocument {
@@ -78,6 +79,10 @@ const PlaceSchema = new mongoose.Schema(
       required: true,
     },
     haveHeating: {
+      type: Boolean,
+      required: true,
+    },
+    petsAllowed: {
       type: Boolean,
       required: true,
     },

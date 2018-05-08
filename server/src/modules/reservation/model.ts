@@ -8,14 +8,14 @@ export interface ReservationInfo {
   total: number;
 }
 
-export interface IRoomDocument extends mongoose.Document, ReservationInfo {
+export interface IReservationDocument extends mongoose.Document, ReservationInfo {
   createdAt: Date;
   updatedAt: Date;
   user: mongoose.Schema.Types.ObjectId | IUserModel;
   place: mongoose.Schema.Types.ObjectId | IPlaceModel;
 }
 
-export interface IReservationModel extends IRoomDocument {
+export interface IReservationModel extends IReservationDocument {
   placeholder: string;
 }
 
