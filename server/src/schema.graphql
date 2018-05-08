@@ -76,6 +76,7 @@ input CreateRoomInput {
 type User {
   _id: ID!
   email: String!
+  rooms: [Room]!
   createdAt: String!
   updatedAt: String!
 }

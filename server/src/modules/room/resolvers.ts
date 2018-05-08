@@ -1,7 +1,11 @@
 import { ResolverMap } from '../../types/graphql-utils';
 import { getRoomById, getOwnerRoom, makeRoomInactive, createRoom } from '.';
+import { UserModel } from '..';
 
 const resolvers: ResolverMap = {
+  Room: {
+    owner: ({ owner }) => UserModel.findById(owner),
+  },
   Query: {
     room: (_, args: GQL.IRoomOnQueryArguments) => getRoomById(args.id),
     // @ts-ignore
