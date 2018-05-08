@@ -5,12 +5,12 @@ import { schema } from '../src/graphqlSetup';
 
 export const mockLogin = async (info: { email: string; password: string }) => {
   const query = `
-  mutation {
-    loginWithEmailAndPassword(input: { email: "${info.email}", password: "${info.password}" }) {
-      token
+    mutation {
+      loginWithEmailAndPassword(input: { email: "${info.email}", password: "${info.password}" }) {
+        token
+      }
     }
-  }
-`;
+  `;
 
   const res = await graphql(schema, query);
 
