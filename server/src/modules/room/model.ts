@@ -6,7 +6,11 @@ export interface RoomInfo {
   description?: string;
   bedroom: number;
   bathroom: number;
-  address: string;
+  location: {
+    address: string;
+    lat: number;
+    lng: number;
+  };
   price: number;
   haveInternet: boolean;
   haveAirCond: boolean;
@@ -42,9 +46,19 @@ const RoomSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    address: {
-      type: String,
-      required: true,
+    location: {
+      address: {
+        type: String,
+        required: true,
+      },
+      lat: {
+        type: Number,
+        required: true,
+      },
+      lng: {
+        type: Number,
+        required: true,
+      },
     },
     price: {
       type: Number,

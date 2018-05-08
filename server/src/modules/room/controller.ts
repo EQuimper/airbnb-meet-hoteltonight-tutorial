@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import { RoomInfo, RoomModel, IRoomModel, IRoomDocument } from './model';
+import { RoomInfo, RoomModel } from './model';
 import { checkValidId } from '../../utils/checkValidId';
 
 export const createRoom = async (info: RoomInfo, userId: string) => {
@@ -15,7 +15,11 @@ export const createRoom = async (info: RoomInfo, userId: string) => {
     description: Yup.string(),
     bedroom: Yup.number().required(),
     bathroom: Yup.number().required(),
-    address: Yup.string().required(),
+    location: Yup.object().shape({
+      address: Yup.string().required(),
+      lat: Yup.number().required(),
+      lng: Yup.number().required(),
+    }),
     price: Yup.number().required(),
     haveInternet: Yup.boolean().required(),
     haveAirCond: Yup.boolean().required(),
@@ -67,7 +71,11 @@ export const updateRoom = async (roomId: string, info: RoomInfo, ownerId: string
     description: Yup.string(),
     bedroom: Yup.number(),
     bathroom: Yup.number(),
-    address: Yup.string(),
+    location: Yup.object().shape({
+      address: Yup.string(),
+      lat: Yup.number(),
+      lng: Yup.number(),
+    }),
     price: Yup.number(),
     haveInternet: Yup.boolean(),
     haveAirCond: Yup.boolean(),
