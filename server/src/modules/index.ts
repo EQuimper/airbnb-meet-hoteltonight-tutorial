@@ -1,3 +1,3 @@
 export * from './auth';
-export * from './room';
+export * from './place';
 export * from './user';

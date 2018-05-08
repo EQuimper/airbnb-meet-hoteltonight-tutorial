@@ -1,53 +1,56 @@
-type RoomLocation {
+type PlaceLocation {
   address: String!
   lat: Int!
   lng: Int!
 }
 
-type Room {
+type Place {
   _id: ID!
   name: String!
   description: String
   bedroom: Int!
   bathroom: Int!
-  location: RoomLocation!
+  location: PlaceLocation!
   price: Int!
   haveInternet: Boolean!
   haveAirCond: Boolean!
   haveHeating: Boolean!
   haveTv: Boolean!
   isActive: Boolean!
+  maxGuest: Int!
+
   owner: User!
 
   createdAt: String!
   updatedAt: String!
 }
 
-input RoomLocationInput {
+input PlaceLocationInput {
   address: String!
   lat: Int!
   lng: Int!
 }
 
-input CreateRoomInput {
+input CreatePlaceInput {
   name: String!
   description: String
   bedroom: Int!
   bathroom: Int!
-  location: RoomLocationInput!
+  location: PlaceLocationInput!
   price: Int!
   haveInternet: Boolean!
   haveAirCond: Boolean!
   haveHeating: Boolean!
   haveTv: Boolean!
+  maxGuest: Int!
 }
 
 type Query {
-  room(id: ID!): Room!
-  getOwnerRoom: [Room]!
+  place(id: ID!): Place!
+  getOwnerPlaces: [Place]!
 }
 
 type Mutation {
-  makeRoomInactive(id: ID!): Room!
-  createRoom(input: CreateRoomInput!): Room!
+  makePlaceInactive(id: ID!): Place!
+  createPlace(input: CreatePlaceInput!): Place!
 }

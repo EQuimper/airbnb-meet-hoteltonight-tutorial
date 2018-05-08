@@ -2,7 +2,7 @@ type User {
   _id: ID!
   email: String!
 
-  rooms: [Room]!
+  places: [Place]!
 
   createdAt: String!
   updatedAt: String!

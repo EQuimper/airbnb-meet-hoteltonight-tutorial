@@ -1,7 +1,7 @@
-import { RoomModel, createRoom, getRoomById } from '..';
+import { PlaceModel, createPlace, getPlaceById } from '..';
 import { UserModel, IUserModel } from '../..';
 
-describe('Room Controller', () => {
+describe('Place Controller', () => {
   const userData = {
     email: 'hello@gmail.com',
     password: 'password123',
@@ -10,16 +10,16 @@ describe('Room Controller', () => {
   let user: IUserModel;
 
   beforeEach(async () => {
-    await RoomModel.remove({});
+    await PlaceModel.remove({});
     await UserModel.remove({});
 
     user = await UserModel.create(userData);
   });
 
-  describe('createRoom', () => {
-    test('able to create a room', async () => {
-      const roomData = {
-        name: 'my room',
+  describe('createPlace', () => {
+    test('able to create a place', async () => {
+      const placeData = {
+        name: 'my place',
         description: 'description',
         bedroom: 2,
         bathroom: 1,
@@ -33,27 +33,29 @@ describe('Room Controller', () => {
         haveAirCond: true,
         haveHeating: false,
         haveTv: true,
+        maxGuest: 3,
       };
 
-      const room = await createRoom(roomData, user._id);
+      const place = await createPlace(placeData, user._id);
 
-      expect(room.name).toBe(roomData.name);
-      expect(room.description).toBe(roomData.description);
-      expect(room.bedroom).toBe(roomData.bedroom);
-      expect(room.bathroom).toBe(roomData.bathroom);
-      expect(room.location).toEqual(roomData.location);
-      expect(room.price).toBe(roomData.price);
-      expect(room.haveInternet).toBe(roomData.haveInternet);
-      expect(room.haveAirCond).toBe(roomData.haveAirCond);
-      expect(room.haveHeating).toBe(roomData.haveHeating);
-      expect(room.haveTv).toBe(roomData.haveTv);
-      expect(room.owner).toBe(user._id);
-      expect(room.isActive).toBe(true);
+      expect(place.name).toBe(placeData.name);
+      expect(place.description).toBe(placeData.description);
+      expect(place.bedroom).toBe(placeData.bedroom);
+      expect(place.bathroom).toBe(placeData.bathroom);
+      expect(place.location).toEqual(placeData.location);
+      expect(place.price).toBe(placeData.price);
+      expect(place.haveInternet).toBe(placeData.haveInternet);
+      expect(place.haveAirCond).toBe(placeData.haveAirCond);
+      expect(place.haveHeating).toBe(placeData.haveHeating);
+      expect(place.haveTv).toBe(placeData.haveTv);
+      expect(place.owner).toBe(user._id);
+      expect(place.isActive).toBe(true);
+      expect(place.maxGuest).toBe(placeData.maxGuest);
     });
 
     test('throw "Owner id is required" if userId is not provided', async () => {
-      const roomData = {
-        name: 'my room',
+      const placeData = {
+        name: 'my place',
         description: 'description',
         bedroom: 2,
         bathroom: 1,
@@ -67,19 +69,20 @@ describe('Room Controller', () => {
         haveAirCond: true,
         haveHeating: false,
         haveTv: true,
+        maxGuest: 3,
       };
 
       try {
         // @ts-ignore
-        await createRoom(roomData);
+        await createPlace(placeData);
       } catch (error) {
         expect(error.message).toBe('Owner id is required');
       }
     });
 
     test('throw "Must be a valid id" if userId is a valid id', async () => {
-      const roomData = {
-        name: 'my room',
+      const placeData = {
+        name: 'my place',
         description: 'description',
         bedroom: 2,
         bathroom: 1,
@@ -93,19 +96,20 @@ describe('Room Controller', () => {
         haveAirCond: true,
         haveHeating: false,
         haveTv: true,
+        maxGuest: 3,
       };
 
       try {
         // @ts-ignore
-        await createRoom(roomData, '123');
+        await createPlace(placeData, '123');
       } catch (error) {
         expect(error.message).toBe('Must be a valid id');
       }
     });
 
     test('throw "haveTv is a required field" if haveTv not provided', async () => {
-      const roomData = {
-        name: 'my room',
+      const placeData = {
+        name: 'my place',
         description: 'description',
         bedroom: 2,
         bathroom: 1,
@@ -118,21 +122,22 @@ describe('Room Controller', () => {
         haveInternet: true,
         haveAirCond: true,
         haveHeating: false,
+        maxGuest: 3,
       };
 
       try {
         // @ts-ignore
-        await createRoom(roomData, user._id);
+        await createPlace(placeData, user._id);
       } catch (error) {
         expect(error.message).toBe('haveTv is a required field');
       }
     });
   });
 
-  describe('getRoomById', () => {
-    test('return room by his id', async () => {
-      const roomData = {
-        name: 'my room',
+  describe('getPlaceById', () => {
+    test('return place by his id', async () => {
+      const placeData = {
+        name: 'my place',
         description: 'description',
         bedroom: 2,
         bathroom: 1,
@@ -146,19 +151,20 @@ describe('Room Controller', () => {
         haveAirCond: true,
         haveHeating: false,
         haveTv: true,
+        maxGuest: 3,
       };
 
-      const room = await createRoom(roomData, user._id);
+      const place = await createPlace(placeData, user._id);
 
-      const res = await getRoomById(room._id);
+      const res = await getPlaceById(place._id);
 
-      expect(res!._id).toEqual(room._id);
-      expect(res!.name).toBe(room.name);
+      expect(res!._id).toEqual(place._id);
+      expect(res!.name).toBe(place.name);
     });
 
-    test('throw "Room not exist" if id dont belong to a room', async () => {
-      const roomData = {
-        name: 'my room',
+    test('throw "Place not exist" if id dont belong to a place', async () => {
+      const placeData = {
+        name: 'my place',
         description: 'description',
         bedroom: 2,
         bathroom: 1,
@@ -172,16 +178,17 @@ describe('Room Controller', () => {
         haveAirCond: true,
         haveHeating: false,
         haveTv: true,
+        maxGuest: 3,
       };
 
-      const room = await createRoom(roomData, user._id);
+      const place = await createPlace(placeData, user._id);
 
-      await room.remove();
+      await place.remove();
 
       try {
-        await getRoomById(room._id);
+        await getPlaceById(place._id);
       } catch (error) {
-        expect(error.message).toBe('Room not exist');
+        expect(error.message).toBe('Place not exist');
       }
     });
   });

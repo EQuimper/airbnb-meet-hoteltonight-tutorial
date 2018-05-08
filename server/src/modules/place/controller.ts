@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 
-import { RoomInfo, RoomModel } from './model';
+import { PlaceInfo, PlaceModel } from './model';
 import { checkValidId } from '../../utils/checkValidId';
 
-export const createRoom = async (info: RoomInfo, userId: string) => {
+export const createPlace = async (info: PlaceInfo, userId: string) => {
   if (userId == null) {
     throw new Error('Owner id is required');
   }
@@ -13,8 +13,8 @@ export const createRoom = async (info: RoomInfo, userId: string) => {
   const schema = Yup.object().shape({
     name: Yup.string().required(),
     description: Yup.string(),
-    bedroom: Yup.number().required(),
-    bathroom: Yup.number().required(),
+    bedplace: Yup.number().required(),
+    bathplace: Yup.number().required(),
     location: Yup.object().shape({
       address: Yup.string().required(),
       lat: Yup.number().required(),
@@ -26,12 +26,13 @@ export const createRoom = async (info: RoomInfo, userId: string) => {
     haveHeating: Yup.boolean().required(),
     haveTv: Yup.boolean().required(),
     isActive: Yup.boolean(),
+    maxGuest: Yup.number().required(),
   });
 
   try {
     await schema.validate(info);
 
-    return RoomModel.create({
+    return PlaceModel.create({
       ...info,
       owner: userId,
     });
@@ -40,43 +41,43 @@ export const createRoom = async (info: RoomInfo, userId: string) => {
   }
 };
 
-export const getRoomById = async (id: string) => {
+export const getPlaceById = async (id: string) => {
   if (id == null) {
-    throw new Error('Room id is required');
+    throw new Error('Place id is required');
   }
 
   checkValidId(id);
 
   try {
-    const room = await RoomModel.findById(id);
+    const place = await PlaceModel.findById(id);
 
-    if (!room) {
-      throw new Error('Room not exist');
+    if (!place) {
+      throw new Error('Place not exist');
     }
 
-    return room;
+    return place;
   } catch (error) {
     throw error;
   }
 };
 
-export const updateRoom = async (roomId: string, info: RoomInfo, ownerId: string) => {
-  if (roomId == null) {
-    throw new Error('Room id is required');
+export const updatePlace = async (placeId: string, info: PlaceInfo, ownerId: string) => {
+  if (placeId == null) {
+    throw new Error('Place id is required');
   }
 
   if (ownerId == null) {
     throw new Error('Owner id is required');
   }
 
-  checkValidId(roomId);
+  checkValidId(placeId);
   checkValidId(ownerId);
 
   const schema = Yup.object().shape({
     name: Yup.string(),
     description: Yup.string(),
-    bedroom: Yup.number(),
-    bathroom: Yup.number(),
+    bedplace: Yup.number(),
+    bathplace: Yup.number(),
     location: Yup.object().shape({
       address: Yup.string(),
       lat: Yup.number(),
@@ -88,63 +89,64 @@ export const updateRoom = async (roomId: string, info: RoomInfo, ownerId: string
     haveHeating: Yup.boolean(),
     haveTv: Yup.boolean(),
     isActive: Yup.boolean(),
+    maxGuest: Yup.number(),
   });
 
   try {
     await schema.validate(info);
 
-    const room = await RoomModel.findById(roomId);
+    const place = await PlaceModel.findById(placeId);
 
-    if (room) {
-      if (room.owner.toString() === ownerId) {
-        (Object.keys(info) as (keyof RoomInfo)[]).forEach(key => {
-          room[key] = info[key];
+    if (place) {
+      if (place.owner.toString() === ownerId) {
+        (Object.keys(info) as (keyof PlaceInfo)[]).forEach(key => {
+          place[key] = info[key];
         });
 
-        return room.save();
+        return place.save();
       }
 
       throw new Error('Unauthorized');
     } else {
-      throw new Error('Room not exist');
+      throw new Error('Place not exist');
     }
   } catch (error) {
     throw error;
   }
 };
 
-export const makeRoomInactive = async (roomId: string, ownerId: string) => {
-  if (roomId == null) {
-    throw new Error('Room id is required');
+export const makePlaceInactive = async (placeId: string, ownerId: string) => {
+  if (placeId == null) {
+    throw new Error('Place id is required');
   }
 
   if (ownerId == null) {
     throw new Error('Owner id is required');
   }
 
-  checkValidId(roomId);
+  checkValidId(placeId);
   checkValidId(ownerId);
 
   try {
-    const room = await RoomModel.findById(roomId);
+    const place = await PlaceModel.findById(placeId);
 
-    if (room) {
-      if (room.owner.toString() === ownerId) {
-        room.isActive = false;
+    if (place) {
+      if (place.owner.toString() === ownerId) {
+        place.isActive = false;
 
-        return room.save();
+        return place.save();
       }
 
       throw new Error('Unauthorized');
     } else {
-      throw new Error('Room not exist');
+      throw new Error('Place not exist');
     }
   } catch (error) {
     throw error;
   }
 };
 
-export const getOwnerRoom = async (userId: string) => {
+export const getOwnerPlaces = async (userId: string) => {
   if (userId == null) {
     throw new Error('Owner id is required');
   }
@@ -152,7 +154,7 @@ export const getOwnerRoom = async (userId: string) => {
   checkValidId(userId);
 
   try {
-    return RoomModel.find({ owner: userId });
+    return PlaceModel.find({ owner: userId });
   } catch (error) {
     throw error;
   }

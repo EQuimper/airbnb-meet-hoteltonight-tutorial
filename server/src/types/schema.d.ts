@@ -22,36 +22,37 @@ declare namespace GQL {
 
   interface IQuery {
     __typename: 'Query';
-    room: IRoom;
-    getOwnerRoom: Array<IRoom>;
+    place: IPlace;
+    getOwnerPlaces: Array<IPlace>;
     me: IUser;
   }
 
-  interface IRoomOnQueryArguments {
+  interface IPlaceOnQueryArguments {
     id: string;
   }
 
-  interface IRoom {
-    __typename: 'Room';
+  interface IPlace {
+    __typename: 'Place';
     _id: string;
     name: string;
     description: string | null;
     bedroom: number;
     bathroom: number;
-    location: IRoomLocation;
+    location: IPlaceLocation;
     price: number;
     haveInternet: boolean;
     haveAirCond: boolean;
     haveHeating: boolean;
     haveTv: boolean;
     isActive: boolean;
+    maxGuest: number;
     owner: IUser;
     createdAt: string;
     updatedAt: string;
   }
 
-  interface IRoomLocation {
-    __typename: 'RoomLocation';
+  interface IPlaceLocation {
+    __typename: 'PlaceLocation';
     address: string;
     lat: number;
     lng: number;
@@ -61,6 +62,7 @@ declare namespace GQL {
     __typename: 'User';
     _id: string;
     email: string;
+    places: Array<IPlace>;
     createdAt: string;
     updatedAt: string;
   }
@@ -69,8 +71,8 @@ declare namespace GQL {
     __typename: 'Mutation';
     loginWithEmailAndPassword: IAuth | null;
     signup: IAuth | null;
-    makeRoomInactive: IRoom;
-    createRoom: IRoom;
+    makePlaceInactive: IPlace;
+    createPlace: IPlace;
   }
 
   interface ILoginWithEmailAndPasswordOnMutationArguments {
@@ -81,12 +83,12 @@ declare namespace GQL {
     input: ISignupInput;
   }
 
-  interface IMakeRoomInactiveOnMutationArguments {
+  interface IMakePlaceInactiveOnMutationArguments {
     id: string;
   }
 
-  interface ICreateRoomOnMutationArguments {
-    input: ICreateRoomInput;
+  interface ICreatePlaceOnMutationArguments {
+    input: ICreatePlaceInput;
   }
 
   interface ILoginWithEmailAndPasswordInput {
@@ -104,20 +106,21 @@ declare namespace GQL {
     password: string;
   }
 
-  interface ICreateRoomInput {
+  interface ICreatePlaceInput {
     name: string;
     description?: string | null;
     bedroom: number;
     bathroom: number;
-    location: IRoomLocationInput;
+    location: IPlaceLocationInput;
     price: number;
     haveInternet: boolean;
     haveAirCond: boolean;
     haveHeating: boolean;
     haveTv: boolean;
+    maxGuest: number;
   }
 
-  interface IRoomLocationInput {
+  interface IPlaceLocationInput {
     address: string;
     lat: number;
     lng: number;

@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { IUserModel } from '../user';
 
-export interface RoomInfo {
+export interface PlaceInfo {
   name: string;
   description?: string | null;
   bedroom: number;
@@ -17,19 +17,20 @@ export interface RoomInfo {
   haveTv: boolean;
   haveHeating: boolean;
   isActive?: boolean;
+  maxGuest: number;
 }
 
-export interface IRoomDocument extends mongoose.Document, RoomInfo {
+export interface IPlaceDocument extends mongoose.Document, PlaceInfo {
   createdAt: Date;
   updatedAt: Date;
   owner: mongoose.Schema.Types.ObjectId | IUserModel;
 }
 
-export interface IRoomModel extends IRoomDocument {
+export interface IPlaceModel extends IPlaceDocument {
   placeholder: string;
 }
 
-const RoomSchema = new mongoose.Schema(
+const PlaceSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -84,6 +85,10 @@ const RoomSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    maxGuest: {
+      type: Number,
+      required: true,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -92,4 +97,4 @@ const RoomSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export const RoomModel = mongoose.model<IRoomModel>('Room', RoomSchema);
+export const PlaceModel = mongoose.model<IPlaceModel>('Place', PlaceSchema);

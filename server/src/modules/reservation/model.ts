@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IUserModel, IRoomModel } from '..';
+import { IUserModel, IPlaceModel } from '..';
 
 export interface ReservationInfo {
   startDate: Date;
@@ -12,7 +12,7 @@ export interface IRoomDocument extends mongoose.Document, ReservationInfo {
   createdAt: Date;
   updatedAt: Date;
   user: mongoose.Schema.Types.ObjectId | IUserModel;
-  room: mongoose.Schema.Types.ObjectId | IRoomModel;
+  place: mongoose.Schema.Types.ObjectId | IPlaceModel;
 }
 
 export interface IReservationModel extends IRoomDocument {
@@ -25,9 +25,9 @@ const ReservationSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-    room: {
+    place: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Room',
+      ref: 'Place',
     },
     startDate: {
       type: Date,

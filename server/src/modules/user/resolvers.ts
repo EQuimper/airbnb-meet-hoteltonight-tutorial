@@ -1,10 +1,10 @@
 import { ResolverMap } from '../../types/graphql-utils';
 import { getViewer } from '.';
-import { getOwnerRoom } from '..';
+import { getOwnerPlaces } from '..';
 
 const resolvers: ResolverMap = {
   User: {
-    rooms: ({ _id }) => getOwnerRoom(_id),
+    places: ({ _id }) => getOwnerPlaces(_id),
   },
   Query: {
     // @ts-ignore
