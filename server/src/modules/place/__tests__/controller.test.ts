@@ -19,6 +19,25 @@ describe('Place Controller', () => {
     password: 'password123',
   };
 
+  const placeData = {
+    name: 'my place',
+    description: 'description',
+    bedroom: 2,
+    bathroom: 1,
+    location: {
+      address: '555 av Will, Quebec',
+      lat: 50,
+      lng: 43,
+    },
+    price: 150,
+    haveInternet: true,
+    haveAirCond: true,
+    haveHeating: false,
+    haveTv: true,
+    maxGuest: 3,
+    petsAllowed: true,
+  };
+
   let user: IUserModel;
   let jon: IUserModel;
 
@@ -32,25 +51,6 @@ describe('Place Controller', () => {
 
   describe('createPlace', () => {
     test('able to create a place', async () => {
-      const placeData = {
-        name: 'my place',
-        description: 'description',
-        bedroom: 2,
-        bathroom: 1,
-        location: {
-          address: '555 av Will, Quebec',
-          lat: 50,
-          lng: 43,
-        },
-        price: 150,
-        haveInternet: true,
-        haveAirCond: true,
-        haveHeating: false,
-        haveTv: true,
-        maxGuest: 3,
-        petsAllowed: true,
-      };
-
       const place = await createPlace(placeData, user._id);
 
       expect(place.name).toBe(placeData.name);
@@ -70,25 +70,6 @@ describe('Place Controller', () => {
     });
 
     test('throw "Owner id is required" if userId is not provided', async () => {
-      const placeData = {
-        name: 'my place',
-        description: 'description',
-        bedroom: 2,
-        bathroom: 1,
-        location: {
-          address: '555 av Will, Quebec',
-          lat: 50,
-          lng: 43,
-        },
-        price: 150,
-        haveInternet: true,
-        haveAirCond: true,
-        haveHeating: false,
-        haveTv: true,
-        maxGuest: 3,
-        petsAllowed: true,
-      };
-
       try {
         // @ts-ignore
         await createPlace(placeData);
@@ -98,25 +79,6 @@ describe('Place Controller', () => {
     });
 
     test('throw "Must be a valid id" if userId is a valid id', async () => {
-      const placeData = {
-        name: 'my place',
-        description: 'description',
-        bedroom: 2,
-        bathroom: 1,
-        location: {
-          address: '555 av Will, Quebec',
-          lat: 50,
-          lng: 43,
-        },
-        price: 150,
-        haveInternet: true,
-        haveAirCond: true,
-        haveHeating: false,
-        haveTv: true,
-        maxGuest: 3,
-        petsAllowed: true,
-      };
-
       try {
         // @ts-ignore
         await createPlace(placeData, '123');
@@ -126,27 +88,10 @@ describe('Place Controller', () => {
     });
 
     test('throw "haveTv is a required field" if haveTv not provided', async () => {
-      const placeData = {
-        name: 'my place',
-        description: 'description',
-        bedroom: 2,
-        bathroom: 1,
-        location: {
-          address: '555 av Will, Quebec',
-          lat: 50,
-          lng: 43,
-        },
-        price: 150,
-        haveInternet: true,
-        haveAirCond: true,
-        haveHeating: false,
-        maxGuest: 3,
-        petsAllowed: true,
-      };
-
+      const data = { ...placeData, haveTv: undefined };
       try {
         // @ts-ignore
-        await createPlace(placeData, user._id);
+        await createPlace(data, user._id);
       } catch (error) {
         expect(error.message).toBe('haveTv is a required field');
       }
@@ -155,25 +100,6 @@ describe('Place Controller', () => {
 
   describe('getPlaceById', () => {
     test('return place by his id', async () => {
-      const placeData = {
-        name: 'my place',
-        description: 'description',
-        bedroom: 2,
-        bathroom: 1,
-        location: {
-          address: '555 av Will, Quebec',
-          lat: 50,
-          lng: 43,
-        },
-        price: 150,
-        haveInternet: true,
-        haveAirCond: true,
-        haveHeating: false,
-        haveTv: true,
-        maxGuest: 3,
-        petsAllowed: true,
-      };
-
       const place = await createPlace(placeData, user._id);
 
       const res = await getPlaceById(place._id);
@@ -192,25 +118,6 @@ describe('Place Controller', () => {
     });
 
     test('throw "Place not exist" if id dont belong to a place', async () => {
-      const placeData = {
-        name: 'my place',
-        description: 'description',
-        bedroom: 2,
-        bathroom: 1,
-        location: {
-          address: '555 av Will, Quebec',
-          lat: 50,
-          lng: 43,
-        },
-        price: 150,
-        haveInternet: true,
-        haveAirCond: true,
-        haveHeating: false,
-        haveTv: true,
-        maxGuest: 3,
-        petsAllowed: true,
-      };
-
       const place = await createPlace(placeData, user._id);
 
       await place.remove();
@@ -224,25 +131,6 @@ describe('Place Controller', () => {
   });
 
   describe('makePlaceInactive', () => {
-    const placeData = {
-      name: 'my place',
-      description: 'description',
-      bedroom: 2,
-      bathroom: 1,
-      location: {
-        address: '555 av Will, Quebec',
-        lat: 50,
-        lng: 43,
-      },
-      price: 150,
-      haveInternet: true,
-      haveAirCond: true,
-      haveHeating: false,
-      haveTv: true,
-      maxGuest: 3,
-      petsAllowed: true,
-    };
-
     let place: IPlaceModel;
 
     beforeEach(async () => {
@@ -296,25 +184,6 @@ describe('Place Controller', () => {
   });
 
   describe('getOwnerPlaces', () => {
-    const placeData = {
-      name: 'my place',
-      description: 'description',
-      bedroom: 2,
-      bathroom: 1,
-      location: {
-        address: '555 av Will, Quebec',
-        lat: 50,
-        lng: 43,
-      },
-      price: 150,
-      haveInternet: true,
-      haveAirCond: true,
-      haveHeating: false,
-      haveTv: true,
-      maxGuest: 3,
-      petsAllowed: true,
-    };
-
     beforeEach(async () => {
       await createPlace(placeData, user._id);
       await createPlace(placeData, user._id);
