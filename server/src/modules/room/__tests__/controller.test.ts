@@ -39,6 +39,50 @@ describe('Room Controller', () => {
       expect(room.isActive).toBe(true);
     });
 
+    test('throw "Owner id is required" if userId is not provided', async () => {
+      const roomData = {
+        name: 'my room',
+        description: 'description',
+        bedroom: 2,
+        bathroom: 1,
+        address: '555 av Will, Quebec',
+        price: 150,
+        haveInternet: true,
+        haveAirCond: true,
+        haveHeating: false,
+        haveTv: true,
+      };
+
+      try {
+        // @ts-ignore
+        await createRoom(roomData);
+      } catch (error) {
+        expect(error.message).toBe('Owner id is required');
+      }
+    });
+
+    test('throw "Must be a valid id" if userId is a valid id', async () => {
+      const roomData = {
+        name: 'my room',
+        description: 'description',
+        bedroom: 2,
+        bathroom: 1,
+        address: '555 av Will, Quebec',
+        price: 150,
+        haveInternet: true,
+        haveAirCond: true,
+        haveHeating: false,
+        haveTv: true,
+      };
+
+      try {
+        // @ts-ignore
+        await createRoom(roomData, '123');
+      } catch (error) {
+        expect(error.message).toBe('Must be a valid id');
+      }
+    });
+
     test('throw "haveTv is a required field" if haveTv not provided', async () => {
       const roomData = {
         name: 'my room',
