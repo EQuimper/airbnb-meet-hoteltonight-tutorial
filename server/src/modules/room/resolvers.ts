@@ -1,5 +1,5 @@
 import { ResolverMap } from '../../types/graphql-utils';
-import { getRoomById, getOwnerRoom, makeRoomInactive } from '.';
+import { getRoomById, getOwnerRoom, makeRoomInactive, createRoom } from '.';
 
 const resolvers: ResolverMap = {
   Query: {
@@ -10,6 +10,8 @@ const resolvers: ResolverMap = {
   Mutation: {
     makeRoomInactive: (_, args: GQL.IMakeRoomInactiveOnMutationArguments, ctx) =>
       makeRoomInactive(args.id, ctx.user!._id),
+    createRoom: (_, args: GQL.ICreateRoomOnMutationArguments, ctx) =>
+      createRoom(args.input, ctx.user!._id),
   },
 };
 

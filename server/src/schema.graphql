@@ -13,6 +13,7 @@ type Mutation {
   loginWithEmailAndPassword(input: LoginWithEmailAndPasswordInput!): Auth
   signup(input: SignupInput!): Auth
   makeRoomInactive(id: ID!): Room!
+  createRoom(input: CreateRoomInput!): Room!
 }
 
 type Auth {
@@ -48,8 +49,28 @@ type Room {
   haveHeating: Boolean!
   haveTv: Boolean!
   isActive: Boolean!
+  owner: User!
   createdAt: String!
   updatedAt: String!
+}
+
+input RoomLocationInput {
+  address: String!
+  lat: Int!
+  lng: Int!
+}
+
+input CreateRoomInput {
+  name: String!
+  description: String
+  bedroom: Int!
+  bathroom: Int!
+  location: RoomLocationInput!
+  price: Int!
+  haveInternet: Boolean!
+  haveAirCond: Boolean!
+  haveHeating: Boolean!
+  haveTv: Boolean!
 }
 
 type User {

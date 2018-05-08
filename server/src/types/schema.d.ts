@@ -45,6 +45,7 @@ declare namespace GQL {
     haveHeating: boolean;
     haveTv: boolean;
     isActive: boolean;
+    owner: IUser;
     createdAt: string;
     updatedAt: string;
   }
@@ -69,6 +70,7 @@ declare namespace GQL {
     loginWithEmailAndPassword: IAuth | null;
     signup: IAuth | null;
     makeRoomInactive: IRoom;
+    createRoom: IRoom;
   }
 
   interface ILoginWithEmailAndPasswordOnMutationArguments {
@@ -81,6 +83,10 @@ declare namespace GQL {
 
   interface IMakeRoomInactiveOnMutationArguments {
     id: string;
+  }
+
+  interface ICreateRoomOnMutationArguments {
+    input: ICreateRoomInput;
   }
 
   interface ILoginWithEmailAndPasswordInput {
@@ -96,6 +102,25 @@ declare namespace GQL {
   interface ISignupInput {
     email: string;
     password: string;
+  }
+
+  interface ICreateRoomInput {
+    name: string;
+    description?: string | null;
+    bedroom: number;
+    bathroom: number;
+    location: IRoomLocationInput;
+    price: number;
+    haveInternet: boolean;
+    haveAirCond: boolean;
+    haveHeating: boolean;
+    haveTv: boolean;
+  }
+
+  interface IRoomLocationInput {
+    address: string;
+    lat: number;
+    lng: number;
   }
 }
 

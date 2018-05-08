@@ -3,7 +3,7 @@ import { IUserModel } from '../user';
 
 export interface RoomInfo {
   name: string;
-  description?: string;
+  description?: string | null;
   bedroom: number;
   bathroom: number;
   location: {
