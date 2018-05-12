@@ -50,6 +50,7 @@ type Place {
   haveTv: Boolean!
   isActive: Boolean!
   maxGuest: Int!
+  petsAllowed: Boolean!
   owner: User!
   createdAt: String!
   updatedAt: String!
@@ -73,6 +74,7 @@ input CreatePlaceInput {
   haveHeating: Boolean!
   haveTv: Boolean!
   maxGuest: Int!
+  petsAllowed: Boolean!
 }
 
 type Reservation {

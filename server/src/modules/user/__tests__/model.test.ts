@@ -1,11 +1,13 @@
+import * as mongoose from 'mongoose';
+
 import { UserModel } from '../model';
 
 describe('UserModel', () => {
-  beforeEach(async () => {
-    await UserModel.remove({});
-  });
-
   describe('create', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+    });
+
     test('hash password on user creation', async () => {
       const data = {
         email: 'hello@gmail.com',
@@ -48,6 +50,10 @@ describe('UserModel', () => {
   });
 
   describe('_comparePassword', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+    });
+
     test('_comparePassword -> compare the password correctly', async () => {
       const data = {
         email: 'hello@gmail.com',

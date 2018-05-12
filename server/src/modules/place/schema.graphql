@@ -18,6 +18,7 @@ type Place {
   haveTv: Boolean!
   isActive: Boolean!
   maxGuest: Int!
+  petsAllowed: Boolean!
 
   owner: User!
 
@@ -43,6 +44,7 @@ input CreatePlaceInput {
   haveHeating: Boolean!
   haveTv: Boolean!
   maxGuest: Int!
+  petsAllowed: Boolean!
 }
 
 type Query {

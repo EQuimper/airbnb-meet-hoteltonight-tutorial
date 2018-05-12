@@ -1,6 +1,8 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 
+import { constants } from '../../config/constants';
+
 export interface UserInfo {
   email: string;
   password: string;
@@ -49,7 +51,7 @@ UserSchema.post('save', (error, _, next) => {
 
 UserSchema.methods = {
   _hashPassword(password: string): string {
-    return bcrypt.hashSync(password, 10);
+    return bcrypt.hashSync(password, constants.SALT_ROUND);
   },
   _comparePassword(this: IUserModel, password: string): boolean {
     return bcrypt.compareSync(password, this.password);

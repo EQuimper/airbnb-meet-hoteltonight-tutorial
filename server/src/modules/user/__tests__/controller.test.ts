@@ -1,12 +1,14 @@
+import * as mongoose from 'mongoose';
+
 import { createUser, getUserByEmail, getViewer } from '../controller';
 import { UserModel } from '../model';
 
 describe('UserController', () => {
-  beforeEach(async () => {
-    await UserModel.remove({});
-  });
-
   describe('createUser', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+    });
+
     test('be able to create a user', async () => {
       const data = {
         email: 'hello@gmail.com',
@@ -75,6 +77,10 @@ describe('UserController', () => {
   });
 
   describe('getUserByEmail', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+    });
+
     test('return a user by his email', async () => {
       const data = {
         email: 'hello@gmail.com',
@@ -107,6 +113,10 @@ describe('UserController', () => {
   });
 
   describe('getViewer', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+    });
+
     test('return user from the id provided', async () => {
       const data = {
         email: 'hello@gmail.com',

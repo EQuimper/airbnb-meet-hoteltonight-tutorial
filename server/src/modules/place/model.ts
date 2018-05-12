@@ -21,6 +21,8 @@ export interface PlaceInfo {
   petsAllowed: boolean;
 }
 
+export type PlaceInfoUpdate = Partial<PlaceInfo>;
+
 export interface IPlaceDocument extends mongoose.Document, PlaceInfo {
   createdAt: Date;
   updatedAt: Date;

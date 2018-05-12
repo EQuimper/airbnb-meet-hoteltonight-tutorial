@@ -1,27 +1,35 @@
+import * as mongoose from 'mongoose';
+
 import { decodeToken, createToken, signup, loginWithEmailAndPassword } from '../controller';
 import { UserModel, IUserModel } from '../../user';
 
+let user: IUserModel;
+
+const data = {
+  email: 'hello@gmail.com',
+  password: 'password123',
+};
+
 describe('AuthController', () => {
-  let user: IUserModel;
-
-  const data = {
-    email: 'hello@gmail.com',
-    password: 'password123',
-  };
-
-  beforeEach(async () => {
-    await UserModel.remove({});
-
-    user = await UserModel.create(data);
-  });
-
   describe('createToken', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(data);
+    });
+
     test('be able to create a jwt token', async () => {
       expect(typeof createToken(user)).toBe('string');
     });
   });
 
   describe('decodeToken', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(data);
+    });
+
     test('be able to decode a good token', async () => {
       const token = createToken(user);
 
@@ -41,6 +49,12 @@ describe('AuthController', () => {
   });
 
   describe('loginWithEmailAndPassword', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(data);
+    });
+
     test('be able to login with email and password', async () => {
       const res = await loginWithEmailAndPassword(data);
       expect(typeof res.token).toBe('string');
@@ -56,6 +70,12 @@ describe('AuthController', () => {
   });
 
   describe('signup', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(data);
+    });
+
     test('be able to signup and receive a jwt token', async () => {
       const info = {
         email: 'jonsnow@gmail.com',

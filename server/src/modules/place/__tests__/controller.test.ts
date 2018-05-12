@@ -1,55 +1,56 @@
 import {
-  PlaceModel,
   createPlace,
   getPlaceById,
   makePlaceInactive,
   IPlaceModel,
   getOwnerPlaces,
+  updatePlace,
+  PlaceModel,
 } from '..';
 import { UserModel, IUserModel } from '../..';
+import * as mongoose from 'mongoose';
+
+const userData = {
+  email: 'hello@gmail.com',
+  password: 'password123',
+};
+
+const jonData = {
+  email: 'jonsnow@gmail.com',
+  password: 'password123',
+};
+
+const placeData = {
+  name: 'my place',
+  description: 'description',
+  bedroom: 2,
+  bathroom: 1,
+  location: {
+    address: '555 av Will, Quebec',
+    lat: 50,
+    lng: 43,
+  },
+  price: 150,
+  haveInternet: true,
+  haveAirCond: true,
+  haveHeating: false,
+  haveTv: true,
+  maxGuest: 3,
+  petsAllowed: true,
+};
+
+let user: IUserModel;
+let jon: IUserModel;
 
 describe('Place Controller', () => {
-  const userData = {
-    email: 'hello@gmail.com',
-    password: 'password123',
-  };
-
-  const jonData = {
-    email: 'jonsnow@gmail.com',
-    password: 'password123',
-  };
-
-  const placeData = {
-    name: 'my place',
-    description: 'description',
-    bedroom: 2,
-    bathroom: 1,
-    location: {
-      address: '555 av Will, Quebec',
-      lat: 50,
-      lng: 43,
-    },
-    price: 150,
-    haveInternet: true,
-    haveAirCond: true,
-    haveHeating: false,
-    haveTv: true,
-    maxGuest: 3,
-    petsAllowed: true,
-  };
-
-  let user: IUserModel;
-  let jon: IUserModel;
-
-  beforeEach(async () => {
-    await PlaceModel.remove({});
-    await UserModel.remove({});
-
-    user = await UserModel.create(userData);
-    jon = await UserModel.create(jonData);
-  });
-
   describe('createPlace', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(userData);
+      jon = await UserModel.create(jonData);
+    });
+
     test('able to create a place', async () => {
       const place = await createPlace(placeData, user._id);
 
@@ -89,6 +90,7 @@ describe('Place Controller', () => {
 
     test('throw "haveTv is a required field" if haveTv not provided', async () => {
       const data = { ...placeData, haveTv: undefined };
+
       try {
         // @ts-ignore
         await createPlace(data, user._id);
@@ -99,6 +101,13 @@ describe('Place Controller', () => {
   });
 
   describe('getPlaceById', () => {
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(userData);
+      jon = await UserModel.create(jonData);
+    });
+
     test('return place by his id', async () => {
       const place = await createPlace(placeData, user._id);
 
@@ -131,11 +140,15 @@ describe('Place Controller', () => {
   });
 
   describe('makePlaceInactive', () => {
-    let place: IPlaceModel;
-
     beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(userData);
       place = await createPlace(placeData, user._id);
+      jon = await UserModel.create(jonData);
     });
+
+    let place: IPlaceModel;
 
     test('able to make a place inactive if owner', async () => {
       expect(place.isActive).toBe(true);
@@ -185,6 +198,11 @@ describe('Place Controller', () => {
 
   describe('getOwnerPlaces', () => {
     beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(userData);
+      jon = await UserModel.create(jonData);
+
       await createPlace(placeData, user._id);
       await createPlace(placeData, user._id);
       await createPlace(placeData, jon._id);
@@ -202,6 +220,72 @@ describe('Place Controller', () => {
       try {
         // @ts-ignore
         await getOwnerPlaces();
+      } catch (error) {
+        expect(error.message).toBe('Owner id is required');
+      }
+    });
+  });
+
+  describe('updatePlace', () => {
+    let place: IPlaceModel;
+    const data = {
+      name: 'my new name',
+      price: 300,
+      haveInternet: false,
+      haveAirCond: false,
+    };
+
+    beforeEach(async () => {
+      await mongoose.connection.dropDatabase();
+
+      user = await UserModel.create(userData);
+      jon = await UserModel.create(jonData);
+      place = await createPlace(placeData, user._id);
+    });
+
+    test('able to update place if owner', async () => {
+      const res = await updatePlace(place._id, data, user._id);
+
+      expect(res._id).toEqual(place._id);
+      expect(res.owner).toEqual(place.owner);
+      expect(res.name).toBe(data.name);
+      expect(res.description).toBe(place.description);
+      expect(res.toJSON().location).toEqual(place.toJSON().location);
+      expect(res.price).toBe(data.price);
+      expect(res.haveInternet).toBe(data.haveInternet);
+      expect(res.haveAirCond).toBe(data.haveAirCond);
+    });
+
+    test('throw "Unauthorized" if update without being the owner', async () => {
+      try {
+        await updatePlace(place._id, data, jon._id);
+      } catch (error) {
+        expect(error.message).toBe('Unauthorized');
+      }
+    });
+
+    test('throw "Place not exist" if place id dont belong to a place', async () => {
+      await place.remove();
+      try {
+        await updatePlace(place._id, data, user._id);
+      } catch (error) {
+        expect(error.message).toBe('Place not exist');
+      }
+    });
+
+    test('throw "Place id is required" if place id not provided', async () => {
+      try {
+        // @ts-ignore
+        await updatePlace(undefined, data, user._id);
+      } catch (error) {
+        expect(error.message).toBe('Place id is required');
+      }
+    });
+
+    test('throw "Owner id is required" if owner id not provided', async () => {
+      try {
+        // @ts-ignore
+        await updatePlace(place._id, data);
       } catch (error) {
         expect(error.message).toBe('Owner id is required');
       }

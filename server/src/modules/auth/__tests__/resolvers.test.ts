@@ -9,12 +9,10 @@ const data = {
 };
 
 describe('Auth Resolvers', () => {
-  beforeEach(async () => {
-    await UserModel.remove({});
-  });
-
   describe('loginWithEmailAndPassword', () => {
     beforeEach(async () => {
+      await UserModel.remove({});
+
       await UserModel.create(data);
     });
 
@@ -64,6 +62,10 @@ describe('Auth Resolvers', () => {
   });
 
   describe('signup', () => {
+    beforeEach(async () => {
+      await UserModel.remove({});
+    });
+
     test('be able to signup and return token', async () => {
       const query = `
         mutation {

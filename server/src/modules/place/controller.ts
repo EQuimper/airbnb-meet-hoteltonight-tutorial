@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import { PlaceInfo, PlaceModel } from './model';
+import { PlaceInfo, PlaceModel, PlaceInfoUpdate } from './model';
 import { checkValidId } from '../../utils/checkValidId';
 
 export const createPlace = async (info: PlaceInfo, userId: string) => {
@@ -62,7 +62,7 @@ export const getPlaceById = async (id: string) => {
   }
 };
 
-export const updatePlace = async (placeId: string, info: PlaceInfo, ownerId: string) => {
+export const updatePlace = async (placeId: string, info: PlaceInfoUpdate, ownerId: string) => {
   if (placeId == null) {
     throw new Error('Place id is required');
   }

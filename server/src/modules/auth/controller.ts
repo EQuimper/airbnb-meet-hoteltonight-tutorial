@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 
 import { IUserModel, createUser, getUserByEmail, UserInfo } from '../user';
-import constants from '../../config/constants';
+import { constants } from '../../config/constants';
 
 export const createToken = (user: IUserModel) => jwt.sign({ _id: user._id }, constants.JWT_SECRET);
 

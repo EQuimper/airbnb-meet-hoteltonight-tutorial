@@ -1,4 +1,7 @@
 import { graphql } from 'graphql';
+import * as mongoose from 'mongoose';
+
+// import constants from '../../../config/constants';
 
 import { UserModel } from '../../user';
 import { schema } from '../../../graphqlSetup';
@@ -12,13 +15,11 @@ const data = {
 describe('User Resolvers', () => {
   beforeEach(async () => {
     await UserModel.remove({});
+
+    await UserModel.create(data);
   });
 
   describe('me', () => {
-    beforeEach(async () => {
-      await UserModel.create(data);
-    });
-
     test('be able to get info if logged', async () => {
       const ctx = await mockLogin(data);
 

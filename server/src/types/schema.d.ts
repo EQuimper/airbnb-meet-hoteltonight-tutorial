@@ -46,6 +46,7 @@ declare namespace GQL {
     haveTv: boolean;
     isActive: boolean;
     maxGuest: number;
+    petsAllowed: boolean;
     owner: IUser;
     createdAt: string;
     updatedAt: string;
@@ -118,12 +119,25 @@ declare namespace GQL {
     haveHeating: boolean;
     haveTv: boolean;
     maxGuest: number;
+    petsAllowed: boolean;
   }
 
   interface IPlaceLocationInput {
     address: string;
     lat: number;
     lng: number;
+  }
+
+  interface IReservation {
+    __typename: 'Reservation';
+    startDate: string;
+    endDate: string;
+    price: number;
+    total: number;
+    place: IPlace;
+    user: IUser;
+    createdAt: string;
+    updatedAt: string;
   }
 }
 
