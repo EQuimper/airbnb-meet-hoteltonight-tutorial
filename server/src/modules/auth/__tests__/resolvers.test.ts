@@ -2,25 +2,21 @@ import { graphql } from 'graphql';
 
 import { UserModel } from '../../user';
 import { schema } from '../../../graphqlSetup';
-
-const data = {
-  email: 'hello@gmail.com',
-  password: 'password123',
-};
+import { userDemo } from '../../../../test/fixtures';
 
 describe('Auth Resolvers', () => {
   describe('loginWithEmailAndPassword', () => {
     beforeEach(async () => {
       await UserModel.remove({});
 
-      await UserModel.create(data);
+      await UserModel.create(userDemo);
     });
 
     test('be able to login and return a token', async () => {
       const query = `
         mutation {
-          loginWithEmailAndPassword(input: { email: "${data.email}", password: "${
-        data.password
+          loginWithEmailAndPassword(input: { email: "${userDemo.email}", password: "${
+        userDemo.password
       }" }) {
             token
           }
@@ -35,7 +31,7 @@ describe('Auth Resolvers', () => {
     test('throw "Unauthorized" if wrong password', async () => {
       const query = `
         mutation {
-          loginWithEmailAndPassword(input: { email: "${data.email}", password: "helloworld" }) {
+          loginWithEmailAndPassword(input: { email: "${userDemo.email}", password: "helloworld" }) {
             token
           }
         }
@@ -69,7 +65,7 @@ describe('Auth Resolvers', () => {
     test('be able to signup and return token', async () => {
       const query = `
         mutation {
-          signup(input: { email: "${data.email}", password: "${data.password}" }) {
+          signup(input: { email: "${userDemo.email}", password: "${userDemo.password}" }) {
             token
           }
         }
@@ -81,11 +77,11 @@ describe('Auth Resolvers', () => {
     });
 
     test('throw "Email must be unique" if email already use', async () => {
-      await UserModel.create(data);
+      await UserModel.create(userDemo);
 
       const query = `
         mutation {
-          signup(input: { email: "${data.email}", password: "${data.password}" }) {
+          signup(input: { email: "${userDemo.email}", password: "${userDemo.password}" }) {
             token
           }
         }

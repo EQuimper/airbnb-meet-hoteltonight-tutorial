@@ -5,39 +5,10 @@ import {
   IPlaceModel,
   getOwnerPlaces,
   updatePlace,
-  PlaceModel,
 } from '..';
 import { UserModel, IUserModel } from '../..';
 import * as mongoose from 'mongoose';
-
-const userData = {
-  email: 'hello@gmail.com',
-  password: 'password123',
-};
-
-const jonData = {
-  email: 'jonsnow@gmail.com',
-  password: 'password123',
-};
-
-const placeData = {
-  name: 'my place',
-  description: 'description',
-  bedroom: 2,
-  bathroom: 1,
-  location: {
-    address: '555 av Will, Quebec',
-    lat: 50,
-    lng: 43,
-  },
-  price: 150,
-  haveInternet: true,
-  haveAirCond: true,
-  haveHeating: false,
-  haveTv: true,
-  maxGuest: 3,
-  petsAllowed: true,
-};
+import { userDemo, secondUserDemo, placeDemo } from '../../../../test/fixtures';
 
 let user: IUserModel;
 let jon: IUserModel;
@@ -47,33 +18,33 @@ describe('Place Controller', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(userData);
-      jon = await UserModel.create(jonData);
+      user = await UserModel.create(userDemo);
+      jon = await UserModel.create(secondUserDemo);
     });
 
     test('able to create a place', async () => {
-      const place = await createPlace(placeData, user._id);
+      const place = await createPlace(placeDemo, user._id);
 
-      expect(place.name).toBe(placeData.name);
-      expect(place.description).toBe(placeData.description);
-      expect(place.bedroom).toBe(placeData.bedroom);
-      expect(place.bathroom).toBe(placeData.bathroom);
-      expect(place.location).toEqual(placeData.location);
-      expect(place.price).toBe(placeData.price);
-      expect(place.haveInternet).toBe(placeData.haveInternet);
-      expect(place.haveAirCond).toBe(placeData.haveAirCond);
-      expect(place.haveHeating).toBe(placeData.haveHeating);
-      expect(place.haveTv).toBe(placeData.haveTv);
+      expect(place.name).toBe(placeDemo.name);
+      expect(place.description).toBe(placeDemo.description);
+      expect(place.bedroom).toBe(placeDemo.bedroom);
+      expect(place.bathroom).toBe(placeDemo.bathroom);
+      expect(place.location).toEqual(placeDemo.location);
+      expect(place.price).toBe(placeDemo.price);
+      expect(place.haveInternet).toBe(placeDemo.haveInternet);
+      expect(place.haveAirCond).toBe(placeDemo.haveAirCond);
+      expect(place.haveHeating).toBe(placeDemo.haveHeating);
+      expect(place.haveTv).toBe(placeDemo.haveTv);
       expect(place.owner).toBe(user._id);
       expect(place.isActive).toBe(true);
-      expect(place.maxGuest).toBe(placeData.maxGuest);
-      expect(place.petsAllowed).toBe(placeData.petsAllowed);
+      expect(place.maxGuest).toBe(placeDemo.maxGuest);
+      expect(place.petsAllowed).toBe(placeDemo.petsAllowed);
     });
 
     test('throw "Owner id is required" if userId is not provided', async () => {
       try {
         // @ts-ignore
-        await createPlace(placeData);
+        await createPlace(placeDemo);
       } catch (error) {
         expect(error.message).toBe('Owner id is required');
       }
@@ -82,14 +53,14 @@ describe('Place Controller', () => {
     test('throw "Must be a valid id" if userId is a valid id', async () => {
       try {
         // @ts-ignore
-        await createPlace(placeData, '123');
+        await createPlace(placeDemo, '123');
       } catch (error) {
         expect(error.message).toBe('Must be a valid id');
       }
     });
 
     test('throw "haveTv is a required field" if haveTv not provided', async () => {
-      const data = { ...placeData, haveTv: undefined };
+      const data = { ...placeDemo, haveTv: undefined };
 
       try {
         // @ts-ignore
@@ -104,12 +75,12 @@ describe('Place Controller', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(userData);
-      jon = await UserModel.create(jonData);
+      user = await UserModel.create(userDemo);
+      jon = await UserModel.create(secondUserDemo);
     });
 
     test('return place by his id', async () => {
-      const place = await createPlace(placeData, user._id);
+      const place = await createPlace(placeDemo, user._id);
 
       const res = await getPlaceById(place._id);
 
@@ -127,7 +98,7 @@ describe('Place Controller', () => {
     });
 
     test('throw "Place not exist" if id dont belong to a place', async () => {
-      const place = await createPlace(placeData, user._id);
+      const place = await createPlace(placeDemo, user._id);
 
       await place.remove();
 
@@ -143,9 +114,9 @@ describe('Place Controller', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(userData);
-      place = await createPlace(placeData, user._id);
-      jon = await UserModel.create(jonData);
+      user = await UserModel.create(userDemo);
+      place = await createPlace(placeDemo, user._id);
+      jon = await UserModel.create(secondUserDemo);
     });
 
     let place: IPlaceModel;
@@ -200,12 +171,12 @@ describe('Place Controller', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(userData);
-      jon = await UserModel.create(jonData);
+      user = await UserModel.create(userDemo);
+      jon = await UserModel.create(secondUserDemo);
 
-      await createPlace(placeData, user._id);
-      await createPlace(placeData, user._id);
-      await createPlace(placeData, jon._id);
+      await createPlace(placeDemo, user._id);
+      await createPlace(placeDemo, user._id);
+      await createPlace(placeDemo, jon._id);
     });
 
     test('return all places belongs a user', async () => {
@@ -238,9 +209,9 @@ describe('Place Controller', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(userData);
-      jon = await UserModel.create(jonData);
-      place = await createPlace(placeData, user._id);
+      user = await UserModel.create(userDemo);
+      jon = await UserModel.create(secondUserDemo);
+      place = await createPlace(placeDemo, user._id);
     });
 
     test('able to update place if owner', async () => {

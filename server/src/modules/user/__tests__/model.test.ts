@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import { UserModel } from '../model';
+import { userDemo } from '../../../../test/fixtures';
 
 describe('UserModel', () => {
   describe('create', () => {
@@ -9,15 +10,10 @@ describe('UserModel', () => {
     });
 
     test('hash password on user creation', async () => {
-      const data = {
-        email: 'hello@gmail.com',
-        password: 'password123',
-      };
+      const user = await UserModel.create(userDemo);
 
-      const user = await UserModel.create(data);
-
-      expect(user.email).toBe(data.email);
-      expect(user.password).not.toBe(data.password);
+      expect(user.email).toBe(userDemo.email);
+      expect(user.password).not.toBe(userDemo.password);
     });
 
     test('throw "Password is not long enough" if password have less than 6 characters', async () => {
@@ -34,15 +30,10 @@ describe('UserModel', () => {
     });
 
     test('throw "Email must be unique" if email already exist on user creation', async () => {
-      const data = {
-        email: 'hello@gmail.com',
-        password: 'password123',
-      };
-
-      await UserModel.create(data);
+      await UserModel.create(userDemo);
 
       try {
-        await UserModel.create(data);
+        await UserModel.create(userDemo);
       } catch (error) {
         expect(error.message).toBe('Email must be unique');
       }
@@ -55,12 +46,7 @@ describe('UserModel', () => {
     });
 
     test('_comparePassword -> compare the password correctly', async () => {
-      const data = {
-        email: 'hello@gmail.com',
-        password: 'password123',
-      };
-
-      const user = await UserModel.create(data);
+      const user = await UserModel.create(userDemo);
 
       expect(user._comparePassword('password123')).toBe(true);
       expect(user._comparePassword('helloworld')).toBe(false);

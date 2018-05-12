@@ -2,20 +2,16 @@ import * as mongoose from 'mongoose';
 
 import { decodeToken, createToken, signup, loginWithEmailAndPassword } from '../controller';
 import { UserModel, IUserModel } from '../../user';
+import { userDemo } from '../../../../test/fixtures';
 
 let user: IUserModel;
-
-const data = {
-  email: 'hello@gmail.com',
-  password: 'password123',
-};
 
 describe('AuthController', () => {
   describe('createToken', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(data);
+      user = await UserModel.create(userDemo);
     });
 
     test('be able to create a jwt token', async () => {
@@ -27,7 +23,7 @@ describe('AuthController', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(data);
+      user = await UserModel.create(userDemo);
     });
 
     test('be able to decode a good token', async () => {
@@ -52,17 +48,17 @@ describe('AuthController', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(data);
+      user = await UserModel.create(userDemo);
     });
 
     test('be able to login with email and password', async () => {
-      const res = await loginWithEmailAndPassword(data);
+      const res = await loginWithEmailAndPassword(userDemo);
       expect(typeof res.token).toBe('string');
     });
 
     test('throw "Unauthorized" if wrong password when login', async () => {
       try {
-        await loginWithEmailAndPassword({ email: data.email, password: 'helloworld' });
+        await loginWithEmailAndPassword({ email: userDemo.email, password: 'helloworld' });
       } catch (error) {
         expect(error.message).toBe('Unauthorized');
       }
@@ -73,7 +69,7 @@ describe('AuthController', () => {
     beforeEach(async () => {
       await mongoose.connection.dropDatabase();
 
-      user = await UserModel.create(data);
+      user = await UserModel.create(userDemo);
     });
 
     test('be able to signup and receive a jwt token', async () => {
@@ -89,7 +85,7 @@ describe('AuthController', () => {
 
     test('throw "Email must be unique" if email already use', async () => {
       const info = {
-        email: data.email,
+        email: userDemo.email,
         password: 'password123',
       };
 

@@ -4,40 +4,17 @@ import { UserModel } from '../../user';
 import { schema } from '../../../graphqlSetup';
 import { mockLogin } from '../../../../test/mockLogin';
 import { PlaceModel, IPlaceModel } from '../..';
-
-const data = {
-  email: 'hello@gmail.com',
-  password: 'password123',
-};
-
-const placeData = {
-  name: 'my place',
-  description: 'description',
-  bedroom: 2,
-  bathroom: 1,
-  location: {
-    address: '555 av Will, Quebec',
-    lat: 50,
-    lng: 43,
-  },
-  price: 150,
-  haveInternet: true,
-  haveAirCond: true,
-  haveHeating: false,
-  haveTv: true,
-  maxGuest: 3,
-  petsAllowed: true,
-};
+import { userDemo, placeDemo } from '../../../../test/fixtures';
 
 describe('User Resolvers', () => {
   describe('me', () => {
     beforeEach(async () => {
       await UserModel.remove({});
 
-      await UserModel.create(data);
+      await UserModel.create(userDemo);
     });
     test('be able to get info if logged', async () => {
-      const ctx = await mockLogin(data);
+      const ctx = await mockLogin(userDemo);
 
       const query = `
         query {
@@ -52,7 +29,7 @@ describe('User Resolvers', () => {
 
       const { me } = res.data!;
 
-      expect(me.email).toBe(data.email);
+      expect(me.email).toBe(userDemo.email);
       expect(typeof me._id).toBe('string');
     });
   });
@@ -66,22 +43,22 @@ describe('User Resolvers', () => {
       await UserModel.remove({});
       await PlaceModel.remove({});
 
-      user = await UserModel.create(data);
+      user = await UserModel.create(userDemo);
 
       place1 = await PlaceModel.create({
-        ...placeData,
+        ...placeDemo,
         owner: user._id,
       });
 
       place2 = await PlaceModel.create({
-        ...placeData,
+        ...placeDemo,
         name: 'place 2',
         owner: user._id,
       });
     });
 
     test('return all places for current user', async () => {
-      const ctx = await mockLogin(data);
+      const ctx = await mockLogin(userDemo);
 
       const query = `
         query {

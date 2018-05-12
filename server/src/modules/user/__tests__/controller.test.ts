@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 
 import { createUser, getUserByEmail, getViewer } from '../controller';
 import { UserModel } from '../model';
+import { userDemo } from '../../../../test/fixtures';
 
 describe('UserController', () => {
   describe('createUser', () => {
@@ -10,15 +11,10 @@ describe('UserController', () => {
     });
 
     test('be able to create a user', async () => {
-      const data = {
-        email: 'hello@gmail.com',
-        password: 'password123',
-      };
+      const user = await createUser(userDemo);
 
-      const user = await createUser(data);
-
-      expect(user.email).toBe(data.email);
-      expect(user.password).not.toBe(data.password);
+      expect(user.email).toBe(userDemo.email);
+      expect(user.password).not.toBe(userDemo.password);
       expect(user.createdAt).not.toBeUndefined();
       expect(user.updatedAt).not.toBeUndefined();
     });
@@ -82,16 +78,11 @@ describe('UserController', () => {
     });
 
     test('return a user by his email', async () => {
-      const data = {
-        email: 'hello@gmail.com',
-        password: 'password123',
-      };
+      await createUser(userDemo);
 
-      await createUser(data);
+      const user = await getUserByEmail(userDemo.email);
 
-      const user = await getUserByEmail(data.email);
-
-      expect(user.email).toBe(data.email);
+      expect(user.email).toBe(userDemo.email);
     });
 
     test('throw "User not exist" if try when email dont match', async () => {
@@ -118,12 +109,7 @@ describe('UserController', () => {
     });
 
     test('return user from the id provided', async () => {
-      const data = {
-        email: 'hello@gmail.com',
-        password: 'password123',
-      };
-
-      const user = await createUser(data);
+      const user = await createUser(userDemo);
 
       const res = await getViewer(user._id);
 
@@ -140,12 +126,7 @@ describe('UserController', () => {
     });
 
     test('throw "User not exist" if id dont belong to a user', async () => {
-      const data = {
-        email: 'hello@gmail.com',
-        password: 'password123',
-      };
-
-      const user = await UserModel.create(data);
+      const user = await UserModel.create(userDemo);
 
       await user.remove();
 
