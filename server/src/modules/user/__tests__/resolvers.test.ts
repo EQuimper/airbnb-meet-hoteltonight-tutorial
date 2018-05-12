@@ -1,7 +1,4 @@
 import { graphql } from 'graphql';
-import * as mongoose from 'mongoose';
-
-// import constants from '../../../config/constants';
 
 import { UserModel } from '../../user';
 import { schema } from '../../../graphqlSetup';
