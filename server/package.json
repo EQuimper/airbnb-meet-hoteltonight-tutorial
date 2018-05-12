@@ -48,6 +48,7 @@
     "yup": "^0.24.1"
   },
   "jest": {
+    "testEnvironment": "node",
     "verbose": true,
     "setupFiles": [
       "./test/setup.ts"
