@@ -19,6 +19,7 @@ type Place {
   isActive: Boolean!
   maxGuest: Int!
   petsAllowed: Boolean!
+  photos: [String]!
 
   owner: User!
 
@@ -45,6 +46,7 @@ input CreatePlaceInput {
   haveTv: Boolean!
   maxGuest: Int!
   petsAllowed: Boolean!
+  photos: [String]!
 }
 
 type Query {

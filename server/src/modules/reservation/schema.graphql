@@ -3,10 +3,20 @@ type Reservation {
   endDate: String!
   price: Int!
   total: Int!
+  cancelled: Boolean!
 
   place: Place!
   user: User!
 
   createdAt: String!
   updatedAt: String!
+}
+
+input CreateReservationInput {
+  startDate: String!
+  endDate: String!
+  price: Int!
+  total: Int!
+
+  place: String!
 }

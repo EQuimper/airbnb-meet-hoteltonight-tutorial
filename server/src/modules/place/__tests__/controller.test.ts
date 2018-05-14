@@ -39,6 +39,7 @@ describe('Place Controller', () => {
       expect(place.isActive).toBe(true);
       expect(place.maxGuest).toBe(placeDemo.maxGuest);
       expect(place.petsAllowed).toBe(placeDemo.petsAllowed);
+      expect(place.photos.length).toBe(0);
     });
 
     test('throw "Owner id is required" if userId is not provided', async () => {
@@ -204,6 +205,7 @@ describe('Place Controller', () => {
       price: 300,
       haveInternet: false,
       haveAirCond: false,
+      photos: ['image.png']
     };
 
     beforeEach(async () => {
@@ -225,6 +227,7 @@ describe('Place Controller', () => {
       expect(res.price).toBe(data.price);
       expect(res.haveInternet).toBe(data.haveInternet);
       expect(res.haveAirCond).toBe(data.haveAirCond);
+      expect(res.photos.length).toBe(1);
     });
 
     test('throw "Unauthorized" if update without being the owner', async () => {

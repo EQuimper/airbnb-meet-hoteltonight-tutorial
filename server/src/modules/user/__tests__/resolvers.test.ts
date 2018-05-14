@@ -13,6 +13,7 @@ describe('User Resolvers', () => {
 
       await UserModel.create(userDemo);
     });
+
     test('be able to get info if logged', async () => {
       const ctx = await mockLogin(userDemo);
 

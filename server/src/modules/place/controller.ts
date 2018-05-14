@@ -26,6 +26,7 @@ export const createPlace = async (info: PlaceInfo, userId: string) => {
     haveHeating: Yup.boolean().required(),
     haveTv: Yup.boolean().required(),
     petsAllowed: Yup.boolean().required(),
+    photos: Yup.array().of(Yup.string()),
     isActive: Yup.boolean(),
     maxGuest: Yup.number().required(),
   });
@@ -88,6 +89,7 @@ export const updatePlace = async (placeId: string, info: PlaceInfoUpdate, ownerI
     haveInternet: Yup.boolean(),
     haveAirCond: Yup.boolean(),
     petsAllowed: Yup.boolean(),
+    photos: Yup.array().of(Yup.string()),
     haveHeating: Yup.boolean(),
     haveTv: Yup.boolean(),
     isActive: Yup.boolean(),

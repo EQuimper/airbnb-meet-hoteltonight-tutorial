@@ -51,6 +51,7 @@ type Place {
   isActive: Boolean!
   maxGuest: Int!
   petsAllowed: Boolean!
+  photos: [String]!
   owner: User!
   createdAt: String!
   updatedAt: String!
@@ -75,6 +76,7 @@ input CreatePlaceInput {
   haveTv: Boolean!
   maxGuest: Int!
   petsAllowed: Boolean!
+  photos: [String]!
 }
 
 type Reservation {
@@ -82,10 +84,19 @@ type Reservation {
   endDate: String!
   price: Int!
   total: Int!
+  cancelled: Boolean!
   place: Place!
   user: User!
   createdAt: String!
   updatedAt: String!
+}
+
+input CreateReservationInput {
+  startDate: String!
+  endDate: String!
+  price: Int!
+  total: Int!
+  place: String!
 }
 
 type User {

@@ -11,7 +11,8 @@
     "no-submodule-imports": false,
     "trailing-comma": true,
     "no-implicit-dependencies": false,
-    "array-type": false
+    "array-type": false,
+    "no-empty-interface": false
   },
   "rulesDirectory": []
 }

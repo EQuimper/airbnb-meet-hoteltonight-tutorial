@@ -47,6 +47,7 @@ declare namespace GQL {
     isActive: boolean;
     maxGuest: number;
     petsAllowed: boolean;
+    photos: Array<string>;
     owner: IUser;
     createdAt: string;
     updatedAt: string;
@@ -120,6 +121,7 @@ declare namespace GQL {
     haveTv: boolean;
     maxGuest: number;
     petsAllowed: boolean;
+    photos: Array<string>;
   }
 
   interface IPlaceLocationInput {

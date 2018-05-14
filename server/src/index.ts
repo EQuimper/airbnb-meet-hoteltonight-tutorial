@@ -21,6 +21,12 @@ export const server = new ApolloServer({
 
   // @ts-ignore
   context: (ctx: any) => ({ user: ctx.req.user }),
+
+  // formatError: (error: Error) => {
+  //   return {
+  //     message: error.message,
+  //   };
+  // },
 });
 
 registerServer({ server, app });

@@ -15,6 +15,7 @@ export const placeDemo = {
   haveTv: true,
   maxGuest: 3,
   petsAllowed: true,
+  photos: [],
 };
 
 export const userDemo = {

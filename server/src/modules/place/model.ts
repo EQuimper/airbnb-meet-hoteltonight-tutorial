@@ -19,6 +19,7 @@ export interface PlaceInfo {
   isActive?: boolean;
   maxGuest: number;
   petsAllowed: boolean;
+  photos: string[];
 }
 
 export type PlaceInfoUpdate = Partial<PlaceInfo>;
@@ -88,6 +89,7 @@ const PlaceSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    photos: [String],
     isActive: {
       type: Boolean,
       default: true,

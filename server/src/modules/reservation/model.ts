@@ -1,22 +1,23 @@
 import * as mongoose from 'mongoose';
 import { IUserModel, IPlaceModel } from '..';
 
-export interface ReservationInfo {
+export interface IReservationInfo {
   startDate: Date;
   endDate: Date;
   price: number;
   total: number;
+  user: string | IUserModel;
+  place: string | IPlaceModel;
 }
 
-export interface IReservationDocument extends mongoose.Document, ReservationInfo {
+export interface IReservationDocument extends mongoose.Document, IReservationInfo {
   createdAt: Date;
   updatedAt: Date;
-  user: mongoose.Schema.Types.ObjectId | IUserModel;
-  place: mongoose.Schema.Types.ObjectId | IPlaceModel;
 }
 
 export interface IReservationModel extends IReservationDocument {
   placeholder: string;
+  cancelled: boolean;
 }
 
 const ReservationSchema = new mongoose.Schema(
@@ -44,6 +45,10 @@ const ReservationSchema = new mongoose.Schema(
     total: {
       type: Number,
       required: true,
+    },
+    cancelled: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },
