@@ -1,5 +1,3 @@
-scalar Date
-
 type User {
   _id: ID!
   email: String!
