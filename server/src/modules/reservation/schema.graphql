@@ -1,6 +1,7 @@
 type Reservation {
-  startDate: String!
-  endDate: String!
+  _id: ID!
+  startDate: Date!
+  endDate: Date!
   price: Int!
   total: Int!
   cancelled: Boolean!
@@ -8,15 +9,25 @@ type Reservation {
   place: Place!
   user: User!
 
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 input CreateReservationInput {
-  startDate: String!
-  endDate: String!
+  startDate: Date!
+  endDate: Date!
   price: Int!
   total: Int!
 
   place: String!
+}
+
+type Query {
+  userReservations: [Reservation]!
+  placeReservations(placeId: ID!): [Reservation]!
+  reservation(reservationId: ID!): Reservation!
+}
+
+type Mutation {
+  createReservation(input: CreateReservationInput!): Reservation!
 }

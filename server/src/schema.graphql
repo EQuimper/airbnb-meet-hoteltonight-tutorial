@@ -6,6 +6,9 @@ schema {
 type Query {
   place(id: ID!): Place!
   getOwnerPlaces: [Place]!
+  userReservations: [Reservation]!
+  placeReservations(placeId: ID!): [Reservation]!
+  reservation(reservationId: ID!): Reservation!
   me: User!
 }
 
@@ -14,6 +17,7 @@ type Mutation {
   signup(input: SignupInput!): Auth
   makePlaceInactive(id: ID!): Place!
   createPlace(input: CreatePlaceInput!): Place!
+  createReservation(input: CreateReservationInput!): Reservation!
 }
 
 type Auth {
@@ -53,8 +57,8 @@ type Place {
   petsAllowed: Boolean!
   photos: [String]!
   owner: User!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 input PlaceLocationInput {
@@ -80,20 +84,21 @@ input CreatePlaceInput {
 }
 
 type Reservation {
-  startDate: String!
-  endDate: String!
+  _id: ID!
+  startDate: Date!
+  endDate: Date!
   price: Int!
   total: Int!
   cancelled: Boolean!
   place: Place!
   user: User!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 input CreateReservationInput {
-  startDate: String!
-  endDate: String!
+  startDate: Date!
+  endDate: Date!
   price: Int!
   total: Int!
   place: String!
@@ -103,6 +108,8 @@ type User {
   _id: ID!
   email: String!
   places: [Place]!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
+
+scalar Date

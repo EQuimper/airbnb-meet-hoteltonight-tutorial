@@ -23,8 +23,8 @@ type Place {
 
   owner: User!
 
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 input PlaceLocationInput {

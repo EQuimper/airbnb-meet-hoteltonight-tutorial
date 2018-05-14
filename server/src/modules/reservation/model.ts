@@ -6,7 +6,6 @@ export interface IReservationInfo {
   endDate: Date;
   price: number;
   total: number;
-  user: string | IUserModel;
   place: string | IPlaceModel;
 }
 
@@ -18,6 +17,7 @@ export interface IReservationDocument extends mongoose.Document, IReservationInf
 export interface IReservationModel extends IReservationDocument {
   placeholder: string;
   cancelled: boolean;
+  user: string | IUserModel;
 }
 
 const ReservationSchema = new mongoose.Schema(
@@ -53,5 +53,7 @@ const ReservationSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+ReservationSchema.index({ user: 1, place: 1 });
 
 export const ReservationModel = mongoose.model<IReservationModel>('Reservation', ReservationSchema);

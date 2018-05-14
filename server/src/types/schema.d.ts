@@ -24,11 +24,22 @@ declare namespace GQL {
     __typename: 'Query';
     place: IPlace;
     getOwnerPlaces: Array<IPlace>;
+    userReservations: Array<IReservation>;
+    placeReservations: Array<IReservation>;
+    reservation: IReservation;
     me: IUser;
   }
 
   interface IPlaceOnQueryArguments {
     id: string;
+  }
+
+  interface IPlaceReservationsOnQueryArguments {
+    placeId: string;
+  }
+
+  interface IReservationOnQueryArguments {
+    reservationId: string;
   }
 
   interface IPlace {
@@ -49,8 +60,8 @@ declare namespace GQL {
     petsAllowed: boolean;
     photos: Array<string>;
     owner: IUser;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: any;
+    updatedAt: any;
   }
 
   interface IPlaceLocation {
@@ -65,8 +76,21 @@ declare namespace GQL {
     _id: string;
     email: string;
     places: Array<IPlace>;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: any;
+    updatedAt: any;
+  }
+
+  interface IReservation {
+    __typename: 'Reservation';
+    startDate: any;
+    endDate: any;
+    price: number;
+    total: number;
+    cancelled: boolean;
+    place: IPlace;
+    user: IUser;
+    createdAt: any;
+    updatedAt: any;
   }
 
   interface IMutation {
@@ -75,6 +99,7 @@ declare namespace GQL {
     signup: IAuth | null;
     makePlaceInactive: IPlace;
     createPlace: IPlace;
+    createReservation: IReservation;
   }
 
   interface ILoginWithEmailAndPasswordOnMutationArguments {
@@ -91,6 +116,10 @@ declare namespace GQL {
 
   interface ICreatePlaceOnMutationArguments {
     input: ICreatePlaceInput;
+  }
+
+  interface ICreateReservationOnMutationArguments {
+    input: ICreateReservationInput;
   }
 
   interface ILoginWithEmailAndPasswordInput {
@@ -130,16 +159,12 @@ declare namespace GQL {
     lng: number;
   }
 
-  interface IReservation {
-    __typename: 'Reservation';
-    startDate: string;
-    endDate: string;
+  interface ICreateReservationInput {
+    startDate: any;
+    endDate: any;
     price: number;
     total: number;
-    place: IPlace;
-    user: IUser;
-    createdAt: string;
-    updatedAt: string;
+    place: string;
   }
 }
 
