@@ -5,6 +5,7 @@ import { registerServer } from 'apollo-server-express';
 import dbInit from './config/db';
 import { middlewares } from './config/middlewares';
 import { typeDefs, resolvers } from './graphqlSetup';
+import { createMocks } from './utils/createMocks';
 
 dbInit();
 
@@ -31,6 +32,7 @@ export const server = new ApolloServer({
 
 registerServer({ server, app });
 
-server.listen().then(({ url }: any) => {
+server.listen().then(async ({ url }: any) => {
+  await createMocks();
   console.log(`🚀 Server ready at ${url}`);
 });

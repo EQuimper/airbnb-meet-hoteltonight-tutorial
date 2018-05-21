@@ -24,3 +24,5 @@ const envContants = {
 const env: ProjectEnv = process.env.NODE_ENV;
 
 export const constants = envContants[env];
+
+export const isDev = process.env.NODE_ENV === 'development'
