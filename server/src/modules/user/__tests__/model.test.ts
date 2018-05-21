@@ -1,12 +1,19 @@
-import * as mongoose from 'mongoose';
-
 import { UserModel } from '../model';
 import { userDemo } from '../../../../test/fixtures';
+import { mongoEnv } from '../../../../test/setup';
 
 describe('UserModel', () => {
+  beforeAll(async () => {
+    await mongoEnv.open();
+  });
+
+  afterAll(async () => {
+    await mongoEnv.close();
+  });
+
   describe('create', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
+      await mongoEnv.reset();
     });
 
     test('hash password on user creation', async () => {
@@ -42,7 +49,7 @@ describe('UserModel', () => {
 
   describe('_comparePassword', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
+      await mongoEnv.reset();
     });
 
     test('_comparePassword -> compare the password correctly', async () => {

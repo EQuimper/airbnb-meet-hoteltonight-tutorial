@@ -5,11 +5,20 @@ import { schema } from '../../../graphqlSetup';
 import { mockLogin } from '../../../../test/mockLogin';
 import { PlaceModel, IPlaceModel } from '../..';
 import { userDemo, placeDemo } from '../../../../test/fixtures';
+import { mongoEnv } from '../../../../test/setup';
 
 describe('User Resolvers', () => {
+  beforeAll(async () => {
+    await mongoEnv.open();
+  });
+
+  afterAll(async () => {
+    await mongoEnv.close();
+  });
+
   describe('me', () => {
     beforeEach(async () => {
-      await UserModel.remove({});
+      await mongoEnv.reset();
 
       await UserModel.create(userDemo);
     });
@@ -41,8 +50,7 @@ describe('User Resolvers', () => {
     let place2: IPlaceModel;
 
     beforeEach(async () => {
-      await UserModel.remove({});
-      await PlaceModel.remove({});
+      await mongoEnv.reset();
 
       user = await UserModel.create(userDemo);
 

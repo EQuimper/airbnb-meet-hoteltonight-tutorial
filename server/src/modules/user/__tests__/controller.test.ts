@@ -1,13 +1,20 @@
-import * as mongoose from 'mongoose';
-
 import { createUser, getUserByEmail, getViewer } from '../controller';
 import { UserModel } from '../model';
 import { userDemo } from '../../../../test/fixtures';
+import { mongoEnv } from '../../../../test/setup';
 
 describe('UserController', () => {
+  beforeAll(async () => {
+    await mongoEnv.open();
+  });
+
+  afterAll(async () => {
+    await mongoEnv.close();
+  });
+
   describe('createUser', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
+      await mongoEnv.reset();
     });
 
     test('be able to create a user', async () => {
@@ -74,7 +81,7 @@ describe('UserController', () => {
 
   describe('getUserByEmail', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
+      await mongoEnv.reset();
     });
 
     test('return a user by his email', async () => {
@@ -105,7 +112,7 @@ describe('UserController', () => {
 
   describe('getViewer', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
+      await mongoEnv.reset();
     });
 
     test('return user from the id provided', async () => {

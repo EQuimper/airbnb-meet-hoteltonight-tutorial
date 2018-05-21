@@ -7,17 +7,23 @@ import {
   updatePlace,
 } from '..';
 import { UserModel, IUserModel } from '../..';
-import * as mongoose from 'mongoose';
 import { userDemo, secondUserDemo, placeDemo } from '../../../../test/fixtures';
+import { mongoEnv } from '../../../../test/setup';
 
 let user: IUserModel;
 let jon: IUserModel;
 
 describe('Place Controller', () => {
+  beforeAll(async () => {
+    await mongoEnv.open();
+  });
+
+  afterAll(async () => {
+    await mongoEnv.close();
+  });
   describe('createPlace', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
       jon = await UserModel.create(secondUserDemo);
     });
@@ -74,8 +80,7 @@ describe('Place Controller', () => {
 
   describe('getPlaceById', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
       jon = await UserModel.create(secondUserDemo);
     });
@@ -113,8 +118,7 @@ describe('Place Controller', () => {
 
   describe('makePlaceInactive', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
       place = await createPlace(placeDemo, user._id);
       jon = await UserModel.create(secondUserDemo);
@@ -170,8 +174,7 @@ describe('Place Controller', () => {
 
   describe('getOwnerPlaces', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
       jon = await UserModel.create(secondUserDemo);
 
@@ -205,12 +208,11 @@ describe('Place Controller', () => {
       price: 300,
       haveInternet: false,
       haveAirCond: false,
-      photos: ['image.png']
+      photos: ['image.png'],
     };
 
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
       jon = await UserModel.create(secondUserDemo);
       place = await createPlace(placeDemo, user._id);

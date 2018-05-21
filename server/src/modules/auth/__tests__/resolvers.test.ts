@@ -3,12 +3,20 @@ import { graphql } from 'graphql';
 import { UserModel } from '../../user';
 import { schema } from '../../../graphqlSetup';
 import { userDemo } from '../../../../test/fixtures';
+import { mongoEnv } from '../../../../test/setup';
 
 describe('Auth Resolvers', () => {
+  beforeAll(async () => {
+    await mongoEnv.open();
+  });
+
+  afterAll(async () => {
+    await mongoEnv.close();
+  });
+
   describe('loginWithEmailAndPassword', () => {
     beforeEach(async () => {
-      await UserModel.remove({});
-
+      await mongoEnv.reset();
       await UserModel.create(userDemo);
     });
 
@@ -59,7 +67,7 @@ describe('Auth Resolvers', () => {
 
   describe('signup', () => {
     beforeEach(async () => {
-      await UserModel.remove({});
+      await mongoEnv.reset();
     });
 
     test('be able to signup and return token', async () => {

@@ -106,6 +106,6 @@ const PlaceSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-PlaceSchema.index({ owner: 1 });
+PlaceSchema.index({ owner: 1 }, { background: false });
 
 export const PlaceModel = mongoose.model<IPlaceModel>('Place', PlaceSchema);

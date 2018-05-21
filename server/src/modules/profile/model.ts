@@ -53,6 +53,6 @@ const ProfileSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-ProfileSchema.index({ user: 1 });
+ProfileSchema.index({ user: 1 }, { background: false });
 
 export const ProfileModel = mongoose.model<IProfileModel>('Profile', ProfileSchema);

@@ -54,6 +54,7 @@ const ReservationSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-ReservationSchema.index({ user: 1, place: 1 });
+ReservationSchema.index({ user: 1 }, { background: false });
+ReservationSchema.index({ place: 1 }, { background: false });
 
 export const ReservationModel = mongoose.model<IReservationModel>('Reservation', ReservationSchema);

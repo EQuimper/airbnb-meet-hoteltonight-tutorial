@@ -5,15 +5,23 @@ import { schema } from '../../../graphqlSetup';
 import { mockLogin } from '../../../../test/mockLogin';
 import { PlaceModel, IPlaceModel } from '../..';
 import { placeDemo, userDemo, secondUserDemo } from '../../../../test/fixtures';
+import { mongoEnv } from '../../../../test/setup';
 
 describe('Place Resolvers', () => {
   let place: IPlaceModel;
 
+  beforeAll(async () => {
+    await mongoEnv.open();
+  });
+
+  afterAll(async () => {
+    await mongoEnv.close();
+  });
+
   describe('Query', () => {
     describe('place', () => {
       beforeEach(async () => {
-        await UserModel.remove({});
-
+        await mongoEnv.reset();
         const user = await UserModel.create(userDemo);
 
         place = await PlaceModel.create({
@@ -77,8 +85,7 @@ describe('Place Resolvers', () => {
       let user: IUserModel;
 
       beforeEach(async () => {
-        await UserModel.remove({});
-
+        await mongoEnv.reset();
         user = await UserModel.create(userDemo);
 
         place = await PlaceModel.create({

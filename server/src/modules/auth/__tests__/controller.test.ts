@@ -1,16 +1,21 @@
-import * as mongoose from 'mongoose';
-
 import { decodeToken, createToken, signup, loginWithEmailAndPassword } from '../controller';
 import { UserModel, IUserModel } from '../../user';
 import { userDemo } from '../../../../test/fixtures';
+import { mongoEnv } from '../../../../test/setup';
 
 let user: IUserModel;
 
 describe('AuthController', () => {
+  beforeAll(async () => {
+    await mongoEnv.open();
+  });
+
+  afterAll(async () => {
+    await mongoEnv.close();
+  });
   describe('createToken', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
     });
 
@@ -21,8 +26,7 @@ describe('AuthController', () => {
 
   describe('decodeToken', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
     });
 
@@ -46,8 +50,7 @@ describe('AuthController', () => {
 
   describe('loginWithEmailAndPassword', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
     });
 
@@ -67,8 +70,7 @@ describe('AuthController', () => {
 
   describe('signup', () => {
     beforeEach(async () => {
-      await mongoose.connection.dropDatabase();
-
+      await mongoEnv.reset();
       user = await UserModel.create(userDemo);
     });
 

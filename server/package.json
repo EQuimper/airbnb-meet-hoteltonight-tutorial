@@ -47,25 +47,5 @@
     "merge-graphql-schemas": "^1.5.1",
     "mongoose": "^5.0.17",
     "yup": "^0.24.1"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "verbose": true,
-    "setupFiles": [
-      "./test/setup.ts"
-    ],
-    "collectCoverage": true,
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
   }
 }
